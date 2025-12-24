@@ -12,7 +12,7 @@ const App = () => {
   // Jigsaw Puzzle State - 4x4 grid (16 pieces)
   const [puzzlePieces, setPuzzlePieces] = useState([]);
   const [draggedPiece, setDraggedPiece] = useState(null);
-  const coupleImageUrl = '/images/couple.png';
+  const coupleImageUrl = '/images/couple.jpg';
 
   // Initialize puzzle pieces
   useEffect(() => {
@@ -190,13 +190,13 @@ const App = () => {
 
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div className="aspect-square bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
-                <video src="/videos/VID20251122200919.mp4" className="w-full h-full object-cover" controls />
+                <img src="/1000039561.jpg" alt="Memory 1" className="w-full h-full object-cover" />
               </div>
-              <div className="aspect-square bg-gradient-to-br from-pink-500/30 to-red-500/30 rounded-3xl flex items-center justify-center text-5xl cursor-pointer hover:scale-105 transition-transform">
-                📸
+              <div className="aspect-square bg-gradient-to-br from-pink-500/30 to-red-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
+                <img src="/images/couple.jpg" alt="Us together" className="w-full h-full object-cover" />
               </div>
-              <div className="aspect-square bg-gradient-to-br from-red-500/30 to-yellow-500/30 rounded-3xl flex items-center justify-center text-5xl cursor-pointer hover:scale-105 transition-transform">
-                📸
+              <div className="aspect-square bg-gradient-to-br from-red-500/30 to-yellow-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
+                <video src="/videos/VID_20251224161733.mp4" className="w-full h-full object-cover" controls />
               </div>
               <div className="aspect-square bg-gradient-to-br from-yellow-500/30 to-purple-500/30 rounded-3xl flex items-center justify-center text-5xl cursor-pointer hover:scale-105 transition-transform">
                 📸
