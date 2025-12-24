@@ -9,6 +9,7 @@ const App = () => {
   const [easterEggMessage, setEasterEggMessage] = useState('');
   const [showDialPad, setShowDialPad] = useState(false);
   const [enlargedImage, setEnlargedImage] = useState(null);
+  const [isPlayerVisible, setIsPlayerVisible] = useState(false);
 
   // Jigsaw Puzzle State - 4x4 grid (16 pieces)
   const [puzzlePieces, setPuzzlePieces] = useState([]);
@@ -116,23 +117,51 @@ const App = () => {
         />
       </div>
 
-      {/* Floating music indicator */}
-      <div className="fixed bottom-6 right-6 bg-gradient-to-r from-pink-500 to-red-400 rounded-full px-5 py-3 shadow-2xl z-50 flex items-center gap-3">
-        <Music className="w-5 h-5 animate-pulse" />
-        <span className="text-xs">Playing: Our Playlist</span>
+      {/* Floating Music Player */}
+      <div 
+        className="fixed bottom-6 right-6 z-50 cursor-pointer"
+        onClick={() => setIsPlayerVisible(!isPlayerVisible)}
+      >
+        <div className="bg-gradient-to-r from-pink-500 to-red-400 rounded-full px-5 py-3 shadow-2xl flex items-center gap-3 hover:scale-105 transition-transform">
+          <Music className="w-5 h-5 animate-pulse" />
+          <span className="text-xs text-white font-medium">
+            {isPlayerVisible ? 'Hide Player' : 'Playing: Our Playlist'}
+          </span>
+        </div>
       </div>
 
-      {/* Hidden SoundCloud Player */}
-      <iframe
-        className="fixed bottom-0 left-0 opacity-0 pointer-events-none"
-        width="100%"
-        height="300"
-        scrolling="no"
-        frameBorder="no"
-        allow="autoplay"
-        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%3Aplaylists%3A2163661529%3Fsecret_token%3Ds-uIIJQ0rsHC4&color=%23ff5500&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"
-        title="SoundCloud Player"
-      />
+      {/* SoundCloud Player Modal */}
+      {isPlayerVisible && (
+        <div className="fixed bottom-24 right-6 z-50 animate-fade-in">
+          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl p-4 w-80">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Music className="w-5 h-5 text-pink-400" />
+                <span className="text-sm font-semibold text-white">Our Special Playlist</span>
+              </div>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsPlayerVisible(false);
+                }}
+                className="text-white/70 hover:text-white transition"
+              >
+                ✕
+              </button>
+            </div>
+            <iframe
+              width="100%"
+              height="166"
+              scrolling="no"
+              frameBorder="no"
+              allow="autoplay"
+              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%3Aplaylists%3A2163661529%3Fsecret_token%3Ds-uIIJQ0rsHC4&color=%23ff5500&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+              className="rounded-lg"
+              title="SoundCloud Player"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Main content */}
       <div className="relative z-10 max-w-lg mx-auto p-6 min-h-screen">
