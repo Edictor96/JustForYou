@@ -191,25 +191,25 @@ const App = () => {
 
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div 
-                className="aspect-square bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
                 onClick={() => setEnlargedImage('/1000039561.jpg')}
               >
-                <img src="/1000039561.jpg" alt="Memory 1" className="w-full h-full object-contain p-2" />
+                <img src="/1000039561.jpg" alt="Memory 1" className="w-full h-full object-cover" />
               </div>
               <div 
-                className="aspect-square bg-gradient-to-br from-pink-500/30 to-red-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
                 onClick={() => setEnlargedImage('/1000035420.heic')}
               >
-                <img src="/1000035420.heic" alt="Memory 2" className="w-full h-full object-contain p-2" />
+                <img src="/1000035420.heic" alt="Memory 2" className="w-full h-full object-cover" />
               </div>
               <div 
-                className="aspect-square bg-gradient-to-br from-red-500/30 to-yellow-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
                 onClick={() => setEnlargedImage('/1000035421.heic')}
               >
-                <img src="/1000035421.heic" alt="Memory 3" className="w-full h-full object-contain p-2" />
+                <img src="/1000035421.heic" alt="Memory 3" className="w-full h-full object-cover" />
               </div>
-              <div className="aspect-square bg-gradient-to-br from-yellow-500/30 to-purple-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
-                <video src="/videos/VID_20251224161733.mp4" className="w-full h-full object-contain" controls />
+              <div className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
+                <video src="/VID.mp4" className="w-full h-full object-cover" controls />
               </div>
             </div>
 
