@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Music, ArrowLeft, Heart } from 'lucide-react';
 
-const ForTrishaApp = () => {
+const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [puzzleSolved, setPuzzleSolved] = useState(false);
   const [showMeme, setShowMeme] = useState(false);
@@ -353,7 +353,7 @@ const ForTrishaApp = () => {
         </div>
       )}
 
-      <style jsx>{`
+      <style>{`
         .animate-fade-in {
           animation: fadeIn 0.6s ease-in;
         }
@@ -373,4 +373,4 @@ const ForTrishaApp = () => {
   );
 };
 
-export default ForTrishaApp;
+export default App;
