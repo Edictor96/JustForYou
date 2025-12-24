@@ -4,21 +4,20 @@ import { Music, ArrowLeft, Heart } from 'lucide-react';
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [puzzleSolved, setPuzzleSolved] = useState(false);
-  const [showMeme, setShowMeme] = useState(false);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [easterEggMessage, setEasterEggMessage] = useState('');
   const [showDialPad, setShowDialPad] = useState(false);
   const [enlargedImage, setEnlargedImage] = useState(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
 
-  // Jigsaw Puzzle State - 4x4 grid (16 pieces)
+  // Jigsaw Puzzle State - 3x3 grid (9 pieces)
   const [puzzlePieces, setPuzzlePieces] = useState([]);
   const [draggedPiece, setDraggedPiece] = useState(null);
-  const coupleImageUrl = '/images/couple.jpg';
+  const coupleImageUrl = '/images/couple.png';
 
   // Initialize puzzle pieces
   useEffect(() => {
-    const pieces = Array.from({ length: 16 }, (_, i) => ({
+    const pieces = Array.from({ length: 9 }, (_, i) => ({
       id: i,
       correctPosition: i,
       currentPosition: i
@@ -39,16 +38,6 @@ const App = () => {
   const pages = ['home', 'theater', 'puzzle', 'confession'];
   const currentPageIndex = pages.indexOf(currentPage);
   const progress = (currentPageIndex / (pages.length - 1)) * 100;
-
-  // Meme popup system
-  useEffect(() => {
-    const memeInterval = setInterval(() => {
-      setShowMeme(true);
-      setTimeout(() => setShowMeme(false), 7000);
-    }, 25000);
-
-    return () => clearInterval(memeInterval);
-  }, []);
 
   // Puzzle drag and drop
   const handleDragStart = (piece) => {
@@ -221,24 +210,24 @@ const App = () => {
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div 
                 className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+                onClick={() => setEnlargedImage('/image.png')}
+              >
+                <img src="/image.png" alt="Memory 1" className="w-full h-full object-cover" />
+              </div>
+              <div 
+                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+                onClick={() => setEnlargedImage('/images/couple.png')}
+              >
+                <img src="/images/couple.png" alt="Memory 2" className="w-full h-full object-cover" />
+              </div>
+              <div 
+                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
                 onClick={() => setEnlargedImage('/1000039561.jpg')}
               >
-                <img src="/1000039561.jpg" alt="Memory 1" className="w-full h-full object-cover" />
-              </div>
-              <div 
-                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/1000035420.heic')}
-              >
-                <img src="/1000035420.heic" alt="Memory 2" className="w-full h-full object-cover" />
-              </div>
-              <div 
-                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/1000035421.heic')}
-              >
-                <img src="/1000035421.heic" alt="Memory 3" className="w-full h-full object-cover" />
+                <img src="/1000039561.jpg" alt="Memory 3" className="w-full h-full object-cover" />
               </div>
               <div className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
-                <video src="/VID.mp4" className="w-full h-full object-cover" controls />
+                <video src="/videos/VID_20251224161733.mp4" className="w-full h-full object-cover" controls autoPlay loop muted />
               </div>
             </div>
 
@@ -260,41 +249,49 @@ const App = () => {
             </div>
 
             {!puzzleSolved ? (
-              <div className="max-w-md mx-auto mt-8">
-                <div className="grid grid-cols-4 gap-1 bg-white/10 p-2 rounded-2xl">
-                  {puzzlePieces.map((piece) => {
-                    const row = Math.floor(piece.id / 4);
-                    const col = piece.id % 4;
-                    
-                    return (
-                      <div
-                        key={piece.id}
-                        draggable
-                        onDragStart={() => handleDragStart(piece)}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDrop={() => handleDrop(piece)}
-                        className="aspect-square rounded-lg cursor-move hover:scale-105 transition-transform shadow-lg overflow-hidden border border-pink-300/30 hover:border-pink-400"
-                        style={{
-                          backgroundImage: `url(${coupleImageUrl})`,
-                          backgroundSize: '400% 400%',
-                          backgroundPosition: `${col * 33.33}% ${row * 33.33}%`,
-                          backgroundRepeat: 'no-repeat'
-                        }}
-                      />
-                    );
-                  })}
+              <div className="max-w-4xl mx-auto mt-8 flex gap-8 items-start justify-center">
+                {/* Original Image Reference */}
+                <div className="flex-shrink-0">
+                  <p className="text-center mb-2 text-pink-300 text-sm font-semibold">Reference</p>
+                  <div className="w-48 h-48 rounded-xl overflow-hidden border-2 border-pink-400/50 shadow-xl">
+                    <img src={coupleImageUrl} alt="Reference" className="w-full h-full object-cover" />
+                  </div>
                 </div>
-                <p className="text-center mt-4 text-white/60 text-sm">Drag and drop pieces to solve</p>
+                
+                {/* Puzzle Grid */}
+                <div>
+                  <p className="text-center mb-2 text-yellow-300 text-sm font-semibold">Solve the Puzzle</p>
+                  <div className="grid grid-cols-3 gap-1 bg-white/10 p-2 rounded-2xl">
+                    {puzzlePieces.map((piece) => {
+                      const row = Math.floor(piece.id / 3);
+                      const col = piece.id % 3;
+                      
+                      return (
+                        <div
+                          key={piece.id}
+                          draggable
+                          onDragStart={() => handleDragStart(piece)}
+                          onDragOver={(e) => e.preventDefault()}
+                          onDrop={() => handleDrop(piece)}
+                          className="aspect-square rounded-lg cursor-move hover:scale-105 transition-transform shadow-lg overflow-hidden border border-pink-300/30 hover:border-pink-400"
+                          style={{
+                            backgroundImage: `url(${coupleImageUrl})`,
+                            backgroundSize: '300% 300%',
+                            backgroundPosition: `${col * 50}% ${row * 50}%`,
+                            backgroundRepeat: 'no-repeat'
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                  <p className="text-center mt-4 text-white/60 text-sm">Drag and drop pieces to solve</p>
+                </div>
               </div>
             ) : (
               <div className="text-center animate-fade-in">
-                <div className="bg-gradient-to-br from-pink-500/20 to-red-500/20 backdrop-blur-lg border border-pink-300/30 rounded-3xl p-10 mx-auto max-w-md">
+                <div className="bg-gradient-to-br from-pink-500/20 to-red-500/20 backdrop-blur-lg border border-pink-300/30 rounded-3xl p-10 mx-auto max-w-2xl">
                   <h3 className="text-3xl font-bold text-pink-400 mb-6" style={{ fontFamily: "'Pacifico', cursive" }}>You did it! 💕</h3>
                   
-                  <p className="text-3xl text-yellow-300 mb-8 leading-relaxed" style={{ fontFamily: "'Pacifico', cursive" }}>
-                    Yaar Kismat badal de meri
-                  </p>
-
                   <div className="rounded-2xl overflow-hidden shadow-2xl shadow-pink-500/50 mb-6">
                     <video 
                       controls 
@@ -304,6 +301,15 @@ const App = () => {
                     >
                       Your browser does not support the video tag.
                     </video>
+                  </div>
+
+                  <div className="space-y-4 mb-6">
+                    <p className="text-3xl text-yellow-300 leading-relaxed" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      yaar tu mujhe genuinely bohot pasand hai
+                    </p>
+                    <p className="text-4xl text-pink-300 font-bold leading-relaxed" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      KISMAT badal de
+                    </p>
                   </div>
 
                   <button
@@ -349,15 +355,6 @@ const App = () => {
           </div>
         )}
       </div>
-
-      {/* Meme Popup */}
-      {showMeme && (
-        <div className="fixed inset-0 flex items-center justify-center z-[100] animate-fade-in">
-          <div className="max-w-md max-h-[80vh] rounded-3xl overflow-hidden shadow-2xl">
-            <img src="/memes/meme1.jpg" alt="Meme" className="w-full h-full object-contain" />
-          </div>
-        </div>
-      )}
 
       {/* Easter Egg Tooltip */}
       {showEasterEgg && (
