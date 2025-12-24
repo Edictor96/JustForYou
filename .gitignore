@@ -1,19 +1,8 @@
-module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
-}
-```
-
----
-
-### **8. `.gitignore`**
-```
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
+package-lock.json
 
 # testing
 /coverage
