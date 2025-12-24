@@ -8,6 +8,7 @@ const App = () => {
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [easterEggMessage, setEasterEggMessage] = useState('');
   const [showDialPad, setShowDialPad] = useState(false);
+  const [enlargedImage, setEnlargedImage] = useState(null);
 
   // Jigsaw Puzzle State - 4x4 grid (16 pieces)
   const [puzzlePieces, setPuzzlePieces] = useState([]);
@@ -189,17 +190,26 @@ const App = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4 mt-8">
-              <div className="aspect-square bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
-                <img src="/1000039561.jpg" alt="Memory 1" className="w-full h-full object-cover" />
+              <div 
+                className="aspect-square bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+                onClick={() => setEnlargedImage('/1000039561.jpg')}
+              >
+                <img src="/1000039561.jpg" alt="Memory 1" className="w-full h-full object-contain p-2" />
               </div>
-              <div className="aspect-square bg-gradient-to-br from-pink-500/30 to-red-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
-                <img src="/images/couple.jpg" alt="Us together" className="w-full h-full object-cover" />
+              <div 
+                className="aspect-square bg-gradient-to-br from-pink-500/30 to-red-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+                onClick={() => setEnlargedImage('/1000035420.heic')}
+              >
+                <img src="/1000035420.heic" alt="Memory 2" className="w-full h-full object-contain p-2" />
               </div>
-              <div className="aspect-square bg-gradient-to-br from-red-500/30 to-yellow-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
-                <video src="/videos/VID_20251224161733.mp4" className="w-full h-full object-cover" controls />
+              <div 
+                className="aspect-square bg-gradient-to-br from-red-500/30 to-yellow-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+                onClick={() => setEnlargedImage('/1000035421.heic')}
+              >
+                <img src="/1000035421.heic" alt="Memory 3" className="w-full h-full object-contain p-2" />
               </div>
-              <div className="aspect-square bg-gradient-to-br from-yellow-500/30 to-purple-500/30 rounded-3xl flex items-center justify-center text-5xl cursor-pointer hover:scale-105 transition-transform">
-                📸
+              <div className="aspect-square bg-gradient-to-br from-yellow-500/30 to-purple-500/30 rounded-3xl flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
+                <video src="/videos/VID_20251224161733.mp4" className="w-full h-full object-contain" controls />
               </div>
             </div>
 
@@ -347,6 +357,29 @@ const App = () => {
             </a>
             
             <button onClick={() => setShowDialPad(false)} className="mt-4 w-full bg-white/10 py-2 rounded-full hover:bg-white/20 transition">
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Enlarged Image Modal */}
+      {enlargedImage && (
+        <div 
+          className="fixed inset-0 bg-black/95 flex items-center justify-center z-[103] animate-fade-in"
+          onClick={() => setEnlargedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center p-4">
+            <img 
+              src={enlargedImage} 
+              alt="Enlarged view" 
+              className="max-w-full max-h-full object-contain rounded-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button 
+              onClick={() => setEnlargedImage(null)}
+              className="absolute top-8 right-8 bg-white/10 hover:bg-white/20 rounded-full p-4 text-3xl transition"
+            >
               ✕
             </button>
           </div>
