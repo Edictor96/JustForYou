@@ -13,7 +13,7 @@ const App = () => {
   // Jigsaw Puzzle State - 3x3 grid (9 pieces)
   const [puzzlePieces, setPuzzlePieces] = useState([]);
   const [draggedPiece, setDraggedPiece] = useState(null);
-  const coupleImageUrl = '/images/couple.png';
+  const coupleImageUrl = '/images/couple.jpg';
 
   // Initialize puzzle pieces
   useEffect(() => {
@@ -210,21 +210,21 @@ const App = () => {
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div 
                 className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/image.png')}
-              >
-                <img src="/image.png" alt="Memory 1" className="w-full h-full object-cover" />
-              </div>
-              <div 
-                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/images/couple.png')}
-              >
-                <img src="/images/couple.png" alt="Memory 2" className="w-full h-full object-cover" />
-              </div>
-              <div 
-                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
                 onClick={() => setEnlargedImage('/1000039561.jpg')}
               >
-                <img src="/1000039561.jpg" alt="Memory 3" className="w-full h-full object-cover" />
+                <img src="/1000039561.jpg" alt="Memory 1" className="w-full h-full object-cover" />
+              </div>
+              <div 
+                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+                onClick={() => setEnlargedImage('/images/couple.jpg')}
+              >
+                <img src="/images/couple.jpg" alt="Memory 2" className="w-full h-full object-cover" />
+              </div>
+              <div 
+                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+                onClick={() => setEnlargedImage('/1000035420.heic')}
+              >
+                <img src="/1000035420.heic" alt="Memory 3" className="w-full h-full object-cover" />
               </div>
               <div className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
                 <video src="/videos/VID_20251224161733.mp4" className="w-full h-full object-cover" controls autoPlay loop muted />
