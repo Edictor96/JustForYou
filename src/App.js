@@ -306,14 +306,12 @@ const App = () => {
                 <img src="/image3.png" alt="Memory 3" className="w-full h-full object-cover" />
               </div>
               <div className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
-                <video 
-                  src="https://drive.google.com/uc?export=download&id=1J_LcJLUDkzv_HIuQbnTlTZS57Lb2OyRW" 
-                  className="w-full h-full object-cover" 
-                  controls 
-                  autoPlay 
-                  loop 
-                  muted
-                  playsInline
+                <iframe
+                  src="https://drive.google.com/file/d/1J_LcJLUDkzv_HIuQbnTlTZS57Lb2OyRW/preview"
+                  className="w-full h-full"
+                  title="Video Theater Memory"
+                  allow="autoplay"
+                  allowFullScreen
                 />
               </div>
             </div>
@@ -380,18 +378,13 @@ const App = () => {
                   <h3 className="text-3xl font-bold text-pink-400 mb-6" style={{ fontFamily: "'Pacifico', cursive" }}>You did it! 💕</h3>
                   
                   <div className="rounded-2xl overflow-hidden shadow-2xl shadow-pink-500/50 mb-6">
-                    <video 
-                      controls 
-                      autoPlay
-                      playsInline
-                      className="w-full rounded-2xl"
-                      src="https://drive.google.com/uc?export=download&id=1YRrc0wJY57TZdQZXbECRqeJuHMcxUkL3"
-                      onEnded={() => {
-                        // Video ends, then show messages (they're already visible)
-                      }}
-                    >
-                      Your browser does not support the video tag.
-                    </video>
+                    <iframe
+                      src="https://drive.google.com/file/d/1YRrc0wJY57TZdQZXbECRqeJuHMcxUkL3/preview"
+                      className="w-full rounded-2xl aspect-video"
+                      title="Puzzle Completion Video"
+                      allow="autoplay"
+                      allowFullScreen
+                    />
                   </div>
 
                   <div className="space-y-4 mb-6">
