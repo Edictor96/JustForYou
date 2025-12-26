@@ -289,26 +289,27 @@ const App = () => {
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div 
                 className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/image1.png')}
+                onClick={() => setEnlargedImage('/1000039561.jpg')}
               >
-                <img src="/image1.png" alt="Memory 1" className="w-full h-full object-cover" />
+                <img src="/1000039561.jpg" alt="Memory 1" className="w-full h-full object-cover" />
               </div>
               <div 
                 className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/image2.png')}
+                onClick={() => setEnlargedImage('/1000035420.heic')}
               >
-                <img src="/image2.png" alt="Memory 2" className="w-full h-full object-cover" />
+                <img src="/1000035420.heic" alt="Memory 2" className="w-full h-full object-cover" />
               </div>
               <div 
                 className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/image3.png')}
+                onClick={() => setEnlargedImage('/1000035421.heic')}
               >
-                <img src="/image3.png" alt="Memory 3" className="w-full h-full object-cover" />
+                <img src="/1000035421.heic" alt="Memory 3" className="w-full h-full object-cover" />
               </div>
-              <div className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
+              <div className="aspect-square flex items-center justify-center overflow-hidden relative">
                 <iframe
                   src="https://drive.google.com/file/d/1J_LcJLUDkzv_HIuQbnTlTZS57Lb2OyRW/preview"
-                  className="w-full h-full"
+                  className="absolute inset-0 w-full h-full border-0"
+                  style={{ transform: 'scale(1.5)', transformOrigin: 'center' }}
                   title="Video Theater Memory"
                   allow="autoplay"
                   allowFullScreen
@@ -384,6 +385,10 @@ const App = () => {
                       title="Puzzle Completion Video"
                       allow="autoplay"
                       allowFullScreen
+                      onLoad={(e) => {
+                        // Auto-navigate to confession after video duration (estimate 30 seconds)
+                        setTimeout(() => setCurrentPage('confession'), 32000);
+                      }}
                     />
                   </div>
 
@@ -391,17 +396,10 @@ const App = () => {
                     <p className="text-3xl text-yellow-300 leading-relaxed" style={{ fontFamily: "'Pacifico', cursive" }}>
                       yaar tu mujhe genuinely bohot pasand hai
                     </p>
-                    <p className="text-4xl text-pink-300 font-bold leading-relaxed" style={{ fontFamily: "'Pacifico', cursive" }}>
-                      KISMAT badal de
+                    <p className="text-5xl text-pink-300 font-bold leading-relaxed animate-pulse" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      I LOVE YOU ❤️
                     </p>
                   </div>
-
-                  <button
-                    onClick={() => setCurrentPage('confession')}
-                    className="bg-gradient-to-r from-pink-500 to-red-400 px-8 py-4 rounded-full text-lg font-semibold hover:scale-105 transition-transform shadow-xl"
-                  >
-                    Continue ❤️
-                  </button>
                 </div>
               </div>
             )}
