@@ -166,7 +166,7 @@ const App = () => {
                 type="submit"
                 className="w-full mt-6 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold py-4 px-6 rounded-full text-xl transition-all hover:scale-105 shadow-lg"
               >
-                Unlock My Heart 💖
+                tu bohot awesome hai 💖
               </button>
             </form>
 
@@ -376,7 +376,7 @@ const App = () => {
                       controls 
                       autoPlay
                       className="w-full rounded-2xl"
-                      src="/videos/VID_20251224161733.mp4"
+                      src="/VID_20251224161733 (1).mp4"
                     >
                       Your browser does not support the video tag.
                     </video>
