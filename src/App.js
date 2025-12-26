@@ -289,24 +289,32 @@ const App = () => {
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div 
                 className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/1000039561.jpg')}
+                onClick={() => setEnlargedImage('/image1.png')}
               >
-                <img src="/1000039561.jpg" alt="Memory 1" className="w-full h-full object-cover" />
+                <img src="/image1.png" alt="Memory 1" className="w-full h-full object-cover" />
               </div>
               <div 
                 className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/images/couple.jpg')}
+                onClick={() => setEnlargedImage('/image2.png')}
               >
-                <img src="/images/couple.jpg" alt="Memory 2" className="w-full h-full object-cover" />
+                <img src="/image2.png" alt="Memory 2" className="w-full h-full object-cover" />
               </div>
               <div 
                 className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/1000035420.heic')}
+                onClick={() => setEnlargedImage('/image3.png')}
               >
-                <img src="/1000035420.heic" alt="Memory 3" className="w-full h-full object-cover" />
+                <img src="/image3.png" alt="Memory 3" className="w-full h-full object-cover" />
               </div>
               <div className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden">
-                <video src="/videos/VID_20251224161733.mp4" className="w-full h-full object-cover" controls autoPlay loop muted />
+                <video 
+                  src="https://drive.google.com/uc?export=download&id=1J_LcJLUDkzv_HIuQbnTlTZS57Lb2OyRW" 
+                  className="w-full h-full object-cover" 
+                  controls 
+                  autoPlay 
+                  loop 
+                  muted
+                  playsInline
+                />
               </div>
             </div>
 
@@ -332,8 +340,8 @@ const App = () => {
                 {/* Original Image Reference */}
                 <div className="flex-shrink-0">
                   <p className="text-center mb-2 text-pink-300 text-sm font-semibold">Reference</p>
-                  <div className="w-48 h-48 rounded-xl overflow-hidden border-2 border-pink-400/50 shadow-xl">
-                    <img src={coupleImageUrl} alt="Reference" className="w-full h-full object-cover" />
+                  <div className="w-64 h-64 rounded-xl overflow-hidden border-2 border-pink-400/50 shadow-xl">
+                    <img src={coupleImageUrl} alt="Reference" className="w-full h-full object-contain bg-white/5" />
                   </div>
                 </div>
                 
@@ -375,8 +383,12 @@ const App = () => {
                     <video 
                       controls 
                       autoPlay
+                      playsInline
                       className="w-full rounded-2xl"
-                      src="/VID_20251224161733 (1).mp4"
+                      src="https://drive.google.com/uc?export=download&id=1YRrc0wJY57TZdQZXbECRqeJuHMcxUkL3"
+                      onEnded={() => {
+                        // Video ends, then show messages (they're already visible)
+                      }}
                     >
                       Your browser does not support the video tag.
                     </video>
