@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Music, ArrowLeft, Heart } from 'lucide-react';
 
 const App = () => {
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
   const [puzzleSolved, setPuzzleSolved] = useState(false);
   const [showEasterEgg, setShowEasterEgg] = useState(false);
@@ -80,6 +83,18 @@ const App = () => {
     setTimeout(() => setShowEasterEgg(false), 4000);
   };
 
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    // Password: "trisha" or "2026" or "newyear"
+    if (password.toLowerCase() === 'trisha' || password === '2026' || password.toLowerCase() === 'newyear') {
+      setIsUnlocked(true);
+      setPasswordError(false);
+    } else {
+      setPasswordError(true);
+      setTimeout(() => setPasswordError(false), 2000);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden relative">
       {/* Starry background */}
@@ -97,6 +112,70 @@ const App = () => {
           />
         ))}
       </div>
+
+      {/* Lock Screen */}
+      {!isUnlocked && (
+        <div className="fixed inset-0 z-[200] bg-gradient-to-br from-pink-900 via-purple-900 to-red-900 flex items-center justify-center animate-fade-in">
+          <div className="absolute inset-0 overflow-hidden">
+            {[...Array(150)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 bg-pink-300 rounded-full animate-pulse"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`,
+                  opacity: Math.random() * 0.7 + 0.3
+                }}
+              />
+            ))}
+          </div>
+          
+          <div className="relative z-10 max-w-md w-full mx-4">
+            <div className="text-center mb-12 animate-fade-in">
+              <div className="text-8xl mb-6 animate-pulse">💕</div>
+              <h1 className="text-5xl font-bold text-pink-200 mb-4" style={{ fontFamily: "'Pacifico', cursive" }}>
+                This is for you
+              </h1>
+              <h2 className="text-6xl font-bold bg-gradient-to-r from-pink-300 via-red-300 to-yellow-300 bg-clip-text text-transparent mb-6" style={{ fontFamily: "'Pacifico', cursive" }}>
+                Trisha
+              </h2>
+              <p className="text-2xl text-pink-200 mb-8">Happy New Year 2026! 🎊</p>
+            </div>
+
+            <form onSubmit={handlePasswordSubmit} className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-pink-300/30 shadow-2xl">
+              <label className="block text-pink-200 text-lg font-semibold mb-4 text-center">
+                Enter the magic word 🔐
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={`w-full px-6 py-4 rounded-full bg-white/20 border-2 ${
+                  passwordError ? 'border-red-400 animate-shake' : 'border-pink-300/50'
+                } text-white placeholder-pink-200/50 focus:outline-none focus:border-pink-400 text-center text-xl`}
+                placeholder="Hint: Your name, year, or celebration"
+                autoFocus
+              />
+              {passwordError && (
+                <p className="text-red-300 text-center mt-3 animate-fade-in">
+                  Oops! Try again 💗
+                </p>
+              )}
+              <button
+                type="submit"
+                className="w-full mt-6 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold py-4 px-6 rounded-full text-xl transition-all hover:scale-105 shadow-lg"
+              >
+                Unlock My Heart 💖
+              </button>
+            </form>
+
+            <div className="text-center mt-8 text-pink-200/70 text-sm">
+              Made with love ❤️
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Progress bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-700 z-50">
@@ -161,7 +240,7 @@ const App = () => {
               <h1 className="text-6xl font-bold bg-gradient-to-r from-pink-400 via-red-400 to-pink-400 bg-clip-text text-transparent mb-4" style={{ fontFamily: "'Pacifico', cursive" }}>
                 For Trisha
               </h1>
-              <p className="text-yellow-300 text-lg">Your special Christmas gift 🎄</p>
+              <p className="text-yellow-300 text-lg">Your special New Year 2026 gift 🎊</p>
               <Heart className="w-12 h-12 mx-auto mt-4 text-pink-400 animate-pulse" />
             </div>
 
@@ -417,6 +496,10 @@ const App = () => {
           animation: fadeIn 0.6s ease-in;
         }
         
+        .animate-shake {
+          animation: shake 0.5s;
+        }
+        
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -426,6 +509,12 @@ const App = () => {
             opacity: 1;
             transform: translateY(0);
           }
+        }
+        
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+          20%, 40%, 60%, 80% { transform: translateX(10px); }
         }
       `}</style>
     </div>
