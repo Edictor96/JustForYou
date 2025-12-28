@@ -159,229 +159,363 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden relative">
-      {/* Starry background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(100)].map((_, i) => (
+    <div className="min-h-screen bg-romantic-pink-50 text-gray-800 overflow-hidden relative grain-overlay font-romantic">
+      {/* Ambient romantic background with gradient blooms */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Gradient blooms */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-romantic-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-romantic-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-romantic-lavender-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s' }} />
+        
+        {/* Subtle floating hearts */}
+        {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+            className="absolute text-romantic-pink-400 opacity-20"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              opacity: Math.random() * 0.7 + 0.3
+              fontSize: `${Math.random() * 20 + 10}px`,
+              animationDelay: `${Math.random() * 5}s`,
+              animation: 'float 8s ease-in-out infinite',
             }}
-          />
+          >
+            ♡
+          </div>
         ))}
       </div>
 
       {/* Lock Screen */}
       {!isUnlocked && (
-        <div className="fixed inset-0 z-[200] bg-gradient-to-br from-pink-900 via-purple-900 to-red-900 flex items-center justify-center animate-fade-in">
-          <div className="absolute inset-0 overflow-hidden">
-            {[...Array(150)].map((_, i) => (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          className="fixed inset-0 z-[200] bg-gradient-to-br from-romantic-pink-100 via-romantic-lavender-100 to-romantic-purple-100 flex items-center justify-center"
+        >
+          <div className="absolute inset-0 overflow-hidden opacity-10">
+            {[...Array(30)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-1 h-1 bg-pink-300 rounded-full animate-pulse"
+                className="absolute text-romantic-pink-500 opacity-40"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  opacity: Math.random() * 0.7 + 0.3
+                  fontSize: `${Math.random() * 30 + 15}px`,
+                  animationDelay: `${Math.random() * 5}s`,
+                  animation: 'float 10s ease-in-out infinite',
                 }}
-              />
+              >
+                ♡
+              </div>
             ))}
           </div>
           
-          <div className="relative z-10 max-w-md w-full mx-4">
-            <div className="text-center mb-12 animate-fade-in">
-              <div className="text-8xl mb-6 animate-pulse">💕</div>
-              <h1 className="text-5xl font-bold text-pink-200 mb-4" style={{ fontFamily: "'Pacifico', cursive" }}>
+          <div className="relative z-10 max-w-md w-full mx-6">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+              className="text-center mb-12"
+            >
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="text-8xl mb-6"
+              >
+                💕
+              </motion.div>
+              <h1 className="text-5xl md:text-6xl font-bold text-romantic-pink-600 mb-4 tracking-wide" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.5px' }}>
                 This is for you
               </h1>
-              <h2 className="text-6xl font-bold bg-gradient-to-r from-pink-300 via-red-300 to-yellow-300 bg-clip-text text-transparent mb-6" style={{ fontFamily: "'Pacifico', cursive" }}>
+              <h2 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-romantic-pink-500 via-romantic-lavender-400 to-romantic-purple-500 bg-clip-text text-transparent mb-6" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '1px' }}>
                 Trisha
               </h2>
-              <p className="text-2xl text-pink-200 mb-8">Happy New Year 2026! 🎊</p>
-            </div>
+              <p className="text-2xl text-romantic-purple-600 mb-8 font-medium">Happy New Year 2026! 🎊</p>
+            </motion.div>
 
-            <form onSubmit={handlePasswordSubmit} className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border-2 border-pink-300/30 shadow-2xl">
-              <label className="block text-pink-200 text-lg font-semibold mb-4 text-center">
+            <motion.form
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+              onSubmit={handlePasswordSubmit}
+              className="bg-white/70 backdrop-blur-romantic rounded-3xl p-8 border border-romantic-pink-200 shadow-romantic-lg"
+            >
+              <label className="block text-romantic-purple-700 text-lg font-semibold mb-4 text-center">
                 Enter the magic word 🔐
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-6 py-4 rounded-full bg-white/20 border-2 ${
-                  passwordError ? 'border-red-400 animate-shake' : 'border-pink-300/50'
-                } text-white placeholder-pink-200/50 focus:outline-none focus:border-pink-400 text-center text-xl`}
+                className={`w-full px-6 py-4 rounded-2xl bg-white/80 border-2 ${
+                  passwordError ? 'border-red-400 animate-shake' : 'border-romantic-pink-300'
+                } text-gray-800 placeholder-romantic-pink-400 focus:outline-none focus:border-romantic-purple-400 focus:ring-2 focus:ring-romantic-purple-200 text-center text-xl transition-all duration-300`}
                 placeholder="Hint: Your name, year, or celebration"
                 autoFocus
               />
               {passwordError && (
-                <p className="text-red-300 text-center mt-3 animate-fade-in">
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-500 text-center mt-3"
+                >
                   Oops! Try again 💗
-                </p>
+                </motion.p>
               )}
               <button
                 type="submit"
-                className="w-full mt-6 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold py-4 px-6 rounded-full text-xl transition-all hover:scale-105 shadow-lg"
+                className="w-full mt-6 bg-gradient-to-r from-romantic-pink-400 via-romantic-lavender-400 to-romantic-purple-400 hover:from-romantic-pink-500 hover:via-romantic-lavender-500 hover:to-romantic-purple-500 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-romantic-glow min-h-[48px]"
               >
                 tu bohot awesome hai 💖
               </button>
-            </form>
+            </motion.form>
 
-            <div className="text-center mt-8 text-pink-200/70 text-sm">
+            <div className="text-center mt-8 text-romantic-purple-600/70 text-sm font-medium">
               Made with love ❤️
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-700 z-50">
-        <div 
-          className="h-full bg-gradient-to-r from-pink-400 to-red-400 transition-all duration-500"
-          style={{ width: `${progress}%` }}
+      <div className="fixed top-0 left-0 w-full h-1.5 bg-romantic-pink-200/50 z-50 backdrop-blur-sm">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          className="h-full bg-gradient-to-r from-romantic-pink-400 via-romantic-lavender-400 to-romantic-purple-400 shadow-romantic"
         />
       </div>
 
       {/* Floating Music Player */}
-      <div 
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         className="fixed bottom-6 right-6 z-50 cursor-pointer"
         onClick={() => setIsPlayerVisible(!isPlayerVisible)}
       >
-        <div className="bg-gradient-to-r from-pink-500 to-red-400 rounded-full px-5 py-3 shadow-2xl flex items-center gap-3 hover:scale-105 transition-transform">
-          <Music className="w-5 h-5 animate-pulse" />
-          <span className="text-xs text-white font-medium">
+        <div className="bg-gradient-to-r from-romantic-pink-400 to-romantic-lavender-400 rounded-full px-6 py-4 shadow-romantic-lg flex items-center gap-3 hover:shadow-romantic-glow transition-all duration-300 min-h-[48px]">
+          <Music className="w-5 h-5 text-white animate-pulse" />
+          <span className="text-sm text-white font-semibold">
             {isPlayerVisible ? 'Hide Player' : 'Playing: Our Playlist'}
           </span>
         </div>
-      </div>
+      </motion.div>
 
       {/* SoundCloud Player Modal */}
-      {isPlayerVisible && (
-        <div className="fixed bottom-24 right-6 z-50 animate-fade-in">
-          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl p-4 w-80">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Music className="w-5 h-5 text-pink-400" />
-                <span className="text-sm font-semibold text-white">Our Special Playlist</span>
+      <AnimatePresence>
+        {isPlayerVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed bottom-24 right-6 z-50"
+          >
+            <div className="bg-white/80 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-3xl shadow-romantic-lg p-6 w-80">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Music className="w-6 h-6 text-romantic-pink-500" />
+                  <span className="text-base font-semibold text-romantic-purple-700">Our Special Playlist</span>
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsPlayerVisible(false);
+                  }}
+                  className="text-romantic-purple-600 hover:text-romantic-purple-800 transition-colors text-xl font-bold"
+                >
+                  ✕
+                </button>
               </div>
-              <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsPlayerVisible(false);
-                }}
-                className="text-white/70 hover:text-white transition"
-              >
-                ✕
-              </button>
+              <iframe
+                width="100%"
+                height="166"
+                scrolling="no"
+                frameBorder="no"
+                allow="autoplay"
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%3Aplaylists%3A2163661529%3Fsecret_token%3Ds-uIIJQ0rsHC4&color=%23ff8fab&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+                className="rounded-2xl"
+                title="SoundCloud Player"
+              />
             </div>
-            <iframe
-              width="100%"
-              height="166"
-              scrolling="no"
-              frameBorder="no"
-              allow="autoplay"
-              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%3Aplaylists%3A2163661529%3Fsecret_token%3Ds-uIIJQ0rsHC4&color=%23ff5500&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
-              className="rounded-lg"
-              title="SoundCloud Player"
-            />
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main content */}
-      <div className="relative z-10 max-w-lg mx-auto p-6 min-h-screen">
+      <div className="relative z-10 max-w-2xl mx-auto p-6 min-h-screen">
         {/* HOME PAGE */}
         {currentPage === 'home' && (
-          <div className="animate-fade-in">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          >
             <div className="text-center pt-20 pb-12">
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-pink-400 via-red-400 to-pink-400 bg-clip-text text-transparent mb-4" style={{ fontFamily: "'Pacifico', cursive" }}>
+              <motion.h1
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-romantic-pink-500 via-romantic-lavender-500 to-romantic-purple-500 bg-clip-text text-transparent mb-4 tracking-wide"
+                style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '1px' }}
+              >
                 For Trisha
-              </h1>
-              <p className="text-yellow-300 text-lg">Your special New Year 2026 gift 🎊</p>
-              <Heart className="w-12 h-12 mx-auto mt-4 text-pink-400 animate-pulse" />
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.7 }}
+                className="text-romantic-purple-600 text-xl font-medium mb-6"
+              >
+                Your special New Year 2026 gift 🎊
+              </motion.p>
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Heart className="w-16 h-16 mx-auto mt-4 text-romantic-pink-500" />
+              </motion.div>
             </div>
 
-            <div className="space-y-5 mt-12">
-              <div 
+            <div className="space-y-5 mt-12 max-w-xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                whileHover={{ scale: 1.02, x: 8 }}
                 onClick={() => setCurrentPage('theater')}
-                className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-lg border border-white/10 rounded-3xl p-6 cursor-pointer hover:translate-x-2 transition-all duration-300 hover:shadow-2xl hover:shadow-pink-500/30 flex items-center gap-5"
+                className="bg-white/60 backdrop-blur-romantic border-2 border-romantic-purple-200 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
               >
-                <div className="bg-white/10 rounded-2xl p-4 text-4xl">🎬</div>
+                <div className="bg-gradient-to-br from-romantic-purple-200 to-romantic-lavender-200 rounded-2xl p-4 text-4xl shadow-romantic">🎬</div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-yellow-300">Video Theater</h3>
-                  <p className="text-white/70 text-sm">Our moments together</p>
+                  <h3 className="text-2xl font-semibold text-romantic-purple-700 mb-1">Video Theater</h3>
+                  <p className="text-romantic-purple-500 text-base">Our moments together</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div 
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                whileHover={{ scale: 1.02, x: 8 }}
                 onClick={() => setCurrentPage('puzzle')}
-                className="bg-gradient-to-r from-pink-500/20 to-yellow-500/20 backdrop-blur-lg border border-white/10 rounded-3xl p-6 cursor-pointer hover:translate-x-2 transition-all duration-300 hover:shadow-2xl hover:shadow-pink-500/30 flex items-center gap-5"
+                className="bg-white/60 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
               >
-                <div className="bg-white/10 rounded-2xl p-4 text-4xl">🧩</div>
+                <div className="bg-gradient-to-br from-romantic-pink-200 to-romantic-lavender-200 rounded-2xl p-4 text-4xl shadow-romantic">🧩</div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-yellow-300">Puzzle Time</h3>
-                  <p className="text-white/70 text-sm">Solve to reveal something special</p>
+                  <h3 className="text-2xl font-semibold text-romantic-pink-700 mb-1">Puzzle Time</h3>
+                  <p className="text-romantic-pink-500 text-base">Solve to reveal something special</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div 
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                whileHover={{ scale: 1.02, x: 8 }}
                 onClick={() => setCurrentPage('flames')}
-                className="bg-gradient-to-r from-red-500/20 to-purple-500/20 backdrop-blur-lg border border-white/10 rounded-3xl p-6 cursor-pointer hover:translate-x-2 transition-all duration-300 hover:shadow-2xl hover:shadow-pink-500/30 flex items-center gap-5"
+                className="bg-white/60 backdrop-blur-romantic border-2 border-romantic-lavender-200 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
               >
-                <div className="bg-white/10 rounded-2xl p-4 text-4xl">🔥</div>
+                <div className="bg-gradient-to-br from-romantic-lavender-200 to-romantic-purple-200 rounded-2xl p-4 text-4xl shadow-romantic">🔥</div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-yellow-300">FLAMES Calculator</h3>
-                  <p className="text-white/70 text-sm">Discover our destiny</p>
+                  <h3 className="text-2xl font-semibold text-romantic-lavender-700 mb-1">FLAMES Calculator</h3>
+                  <p className="text-romantic-lavender-500 text-base">Discover our destiny</p>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
             {/* Easter eggs */}
-            <div className="absolute top-8 right-8 text-2xl cursor-pointer hover:scale-125 transition" onClick={() => triggerEasterEgg('brooklyn99')}>🚔</div>
-          </div>
+            <motion.div
+              whileHover={{ scale: 1.3, rotate: 10 }}
+              className="absolute top-12 right-8 text-3xl cursor-pointer"
+              onClick={() => triggerEasterEgg('brooklyn99')}
+            >
+              🚔
+            </motion.div>
+          </motion.div>
         )}
 
         {/* THEATER PAGE */}
         {currentPage === 'theater' && (
-          <div className="animate-fade-in">
-            <button onClick={() => setCurrentPage('home')} className="absolute top-6 left-6 bg-white/10 hover:bg-white/20 rounded-full p-3 transition">
-              <ArrowLeft className="w-5 h-5" />
-            </button>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setCurrentPage('home')}
+              className="absolute top-6 left-6 bg-white/70 hover:bg-white/90 backdrop-blur-romantic rounded-full p-3 transition-all duration-300 shadow-romantic border-2 border-romantic-pink-200 min-h-[48px] min-w-[48px] flex items-center justify-center z-20"
+            >
+              <ArrowLeft className="w-6 h-6 text-romantic-purple-600" />
+            </motion.button>
 
             <div className="text-center pt-24 pb-12">
-              <h2 className="text-5xl font-bold text-yellow-300 mb-3" style={{ fontFamily: "'Pacifico', cursive" }}>Video Theater</h2>
-              <p className="text-white/70">Every frame is a memory with you</p>
+              <motion.h2
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-romantic-purple-600 via-romantic-lavender-500 to-romantic-pink-500 bg-clip-text text-transparent mb-3 tracking-wide"
+                style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.8px' }}
+              >
+                Video Theater
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.7 }}
+                className="text-romantic-purple-600 text-lg font-medium"
+              >
+                Every frame is a memory with you
+              </motion.p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mt-8">
-              <div 
-                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden rounded-2xl"
+            <div className="grid grid-cols-2 gap-5 mt-8 max-w-2xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                whileHover={{ scale: 1.05, rotate: 1 }}
+                className="aspect-square flex items-center justify-center cursor-pointer transition-all duration-300 overflow-hidden rounded-3xl shadow-romantic-lg border-2 border-romantic-pink-200 hover:shadow-romantic-glow"
                 onClick={() => setEnlargedImage('/images/image1.jpg')}
               >
                 <img src="/images/image1.jpg" alt="Memory 1" className="w-full h-full object-cover" />
-              </div>
-              <div 
-                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden rounded-2xl"
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                whileHover={{ scale: 1.05, rotate: -1 }}
+                className="aspect-square flex items-center justify-center cursor-pointer transition-all duration-300 overflow-hidden rounded-3xl shadow-romantic-lg border-2 border-romantic-lavender-200 hover:shadow-romantic-glow"
                 onClick={() => setEnlargedImage('/images/image2.jpg')}
               >
                 <img src="/images/image2.jpg" alt="Memory 2" className="w-full h-full object-cover" />
-              </div>
-              <div 
-                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden rounded-2xl"
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.7, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                whileHover={{ scale: 1.05, rotate: 1 }}
+                className="aspect-square flex items-center justify-center cursor-pointer transition-all duration-300 overflow-hidden rounded-3xl shadow-romantic-lg border-2 border-romantic-purple-200 hover:shadow-romantic-glow"
                 onClick={() => setEnlargedImage('/images/image3.jpg')}
               >
                 <img src="/images/image3.jpg" alt="Memory 3" className="w-full h-full object-cover" />
-              </div>
-              <div className="aspect-square flex items-center justify-center overflow-hidden relative rounded-2xl">
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.8, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                className="aspect-square flex items-center justify-center overflow-hidden relative rounded-3xl shadow-romantic-lg border-2 border-romantic-pink-200 bg-white/50 backdrop-blur-sm"
+              >
                 <iframe
                   src="https://drive.google.com/file/d/1J_LcJLUDkzv_HIuQbnTlTZS57Lb2OyRW/preview"
-                  className="absolute inset-0 w-full h-full border-0"
+                  className="absolute inset-0 w-full h-full border-0 rounded-3xl"
                   style={{ transform: 'scale(1.5)', transformOrigin: 'center' }}
                   title="Video Theater Memory"
                   allow="autoplay"
@@ -389,39 +523,80 @@ const App = () => {
                   preload="auto"
                   allowFullScreen
                 />
-              </div>
+              </motion.div>
             </div>
 
-            <div className="absolute top-28 right-6 text-xl cursor-pointer hover:scale-125 transition" onClick={() => triggerEasterEgg('fightclub')}>🥊</div>
-          </div>
+            <motion.div
+              whileHover={{ scale: 1.3, rotate: 10 }}
+              className="absolute top-28 right-8 text-3xl cursor-pointer"
+              onClick={() => triggerEasterEgg('fightclub')}
+            >
+              🥊
+            </motion.div>
+          </motion.div>
         )}
 
         {/* PUZZLE PAGE */}
         {currentPage === 'puzzle' && (
-          <div className="animate-fade-in">
-            <button onClick={() => setCurrentPage('theater')} className="absolute top-6 left-6 bg-white/10 hover:bg-white/20 rounded-full p-3 transition">
-              <ArrowLeft className="w-5 h-5" />
-            </button>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setCurrentPage('theater')}
+              className="absolute top-6 left-6 bg-white/70 hover:bg-white/90 backdrop-blur-romantic rounded-full p-3 transition-all duration-300 shadow-romantic border-2 border-romantic-pink-200 z-20 min-h-[48px] min-w-[48px] flex items-center justify-center"
+            >
+              <ArrowLeft className="w-6 h-6 text-romantic-purple-600" />
+            </motion.button>
 
             <div className="text-center pt-24 pb-12">
-              <h2 className="text-5xl font-bold text-yellow-300 mb-3" style={{ fontFamily: "'Pacifico', cursive" }}>Puzzle Time</h2>
-              <p className="text-white/70">You organize my chaos</p>
+              <motion.h2
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-romantic-pink-600 via-romantic-lavender-500 to-romantic-purple-600 bg-clip-text text-transparent mb-3 tracking-wide"
+                style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.8px' }}
+              >
+                Puzzle Time
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.7 }}
+                className="text-romantic-purple-600 text-lg font-medium"
+              >
+                You organize my chaos
+              </motion.p>
             </div>
 
             {!puzzleSolved ? (
-              <div className="max-w-4xl mx-auto mt-8 flex gap-8 items-start justify-center">
+              <div className="max-w-6xl mx-auto mt-8 flex flex-col md:flex-row gap-8 items-start justify-center px-4">
                 {/* Original Image Reference */}
-                <div className="flex-shrink-0">
-                  <p className="text-center mb-2 text-pink-300 text-sm font-semibold">Reference</p>
-                  <div className="w-64 h-64 rounded-xl overflow-hidden border-2 border-pink-400/50 shadow-xl">
-                    <img src={coupleImageUrl} alt="Reference" className="w-full h-full object-contain bg-white/5" />
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                  className="flex-shrink-0 mx-auto"
+                >
+                  <p className="text-center mb-3 text-romantic-pink-600 text-sm font-semibold">Reference</p>
+                  <div className="w-64 h-64 rounded-3xl overflow-hidden border-2 border-romantic-pink-300 shadow-romantic-lg">
+                    <img src={coupleImageUrl} alt="Reference" className="w-full h-full object-contain bg-white/50" />
                   </div>
-                </div>
+                </motion.div>
                 
                 {/* Puzzle Grid */}
-                <div>
-                  <p className="text-center mb-2 text-yellow-300 text-sm font-semibold">Solve the Puzzle</p>
-                  <div className="grid grid-cols-3 gap-1 bg-white/10 p-2 rounded-2xl">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                  className="mx-auto"
+                >
+                  <p className="text-center mb-3 text-romantic-lavender-600 text-sm font-semibold">Solve the Puzzle</p>
+                  <div className="grid grid-cols-3 gap-2 bg-white/60 backdrop-blur-romantic p-3 rounded-3xl border-2 border-romantic-lavender-200 shadow-romantic-lg">
                     {puzzlePieces.map((piece) => {
                       const row = Math.floor(piece.id / 3);
                       const col = piece.id % 3;
@@ -433,7 +608,7 @@ const App = () => {
                           onDragStart={() => handleDragStart(piece)}
                           onDragOver={(e) => e.preventDefault()}
                           onDrop={() => handleDrop(piece)}
-                          className="aspect-square rounded-lg cursor-move hover:scale-105 transition-transform shadow-lg overflow-hidden border border-pink-300/30 hover:border-pink-400"
+                          className="aspect-square rounded-2xl cursor-move hover:scale-105 transition-all duration-300 shadow-romantic overflow-hidden border-2 border-romantic-pink-200 hover:border-romantic-purple-300"
                           style={{
                             backgroundImage: `url(${coupleImageUrl})`,
                             backgroundSize: '300% 300%',
@@ -444,18 +619,23 @@ const App = () => {
                       );
                     })}
                   </div>
-                  <p className="text-center mt-4 text-white/60 text-sm">Drag and drop pieces to solve</p>
-                </div>
+                  <p className="text-center mt-4 text-romantic-purple-600 text-sm font-medium">Drag and drop pieces to solve</p>
+                </motion.div>
               </div>
             ) : (
-              <div className="text-center animate-fade-in">
-                <div className="bg-gradient-to-br from-pink-500/20 to-red-500/20 backdrop-blur-lg border border-pink-300/30 rounded-3xl p-10 mx-auto max-w-2xl">
-                  <h3 className="text-3xl font-bold text-pink-400 mb-6" style={{ fontFamily: "'Pacifico', cursive" }}>You did it! 💕</h3>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                className="text-center"
+              >
+                <div className="bg-white/70 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-3xl p-10 mx-auto max-w-2xl shadow-romantic-lg">
+                  <h3 className="text-3xl md:text-4xl font-bold text-romantic-pink-600 mb-8 tracking-wide" style={{ fontFamily: "'Poppins', sans-serif" }}>You did it! 💕</h3>
                   
-                  <div className="rounded-2xl overflow-hidden shadow-2xl shadow-pink-500/50 mb-6">
+                  <div className="rounded-3xl overflow-hidden shadow-romantic-lg mb-8 border-2 border-romantic-lavender-200">
                     <iframe
                       src="https://drive.google.com/file/d/1YRrc0wJY57TZdQZXbECRqeJuHMcxUkL3/preview"
-                      className="w-full rounded-2xl aspect-video"
+                      className="w-full rounded-3xl aspect-video"
                       title="Puzzle Completion Video"
                       allow="autoplay"
                       allowFullScreen
@@ -466,30 +646,52 @@ const App = () => {
                     />
                   </div>
 
-                  <div className="space-y-4 mb-6">
-                    <p className="text-3xl text-yellow-300 leading-relaxed" style={{ fontFamily: "'Pacifico', cursive" }}>
+                  <div className="space-y-6 mb-6">
+                    <p className="text-2xl md:text-3xl text-romantic-purple-700 leading-relaxed font-semibold" style={{ fontFamily: "'Poppins', sans-serif", lineHeight: 1.7 }}>
                       yaar tu mujhe genuinely bohot pasand hai
                     </p>
-                    <p className="text-5xl text-pink-300 font-bold leading-relaxed animate-pulse" style={{ fontFamily: "'Pacifico', cursive" }}>
+                    <motion.p
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      className="text-4xl md:text-5xl bg-gradient-to-r from-romantic-pink-600 via-romantic-lavender-500 to-romantic-purple-600 bg-clip-text text-transparent font-bold leading-relaxed"
+                      style={{ fontFamily: "'Poppins', sans-serif", lineHeight: 1.6 }}
+                    >
                       I LOVE YOU ❤️
-                    </p>
+                    </motion.p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             )}
 
-            <div className="absolute top-32 left-8 text-lg cursor-pointer hover:scale-125 transition" onClick={() => triggerEasterEgg('fir')}>🚓</div>
-          </div>
+            <motion.div
+              whileHover={{ scale: 1.3, rotate: 10 }}
+              className="absolute top-32 left-8 text-3xl cursor-pointer"
+              onClick={() => triggerEasterEgg('fir')}
+            >
+              🚓
+            </motion.div>
+          </motion.div>
         )}
 
         {/* FLAMES CALCULATOR PAGE */}
         {currentPage === 'flames' && (
-          <div className="animate-fade-in min-h-screen flex items-center justify-center px-4">
-            <button onClick={() => setCurrentPage('home')} className="absolute top-6 left-6 bg-white/10 hover:bg-white/20 rounded-full p-3 transition z-10">
-              <ArrowLeft className="w-5 h-5" />
-            </button>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+            className="min-h-screen flex items-center justify-center px-4 py-20"
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setCurrentPage('home')}
+              className="absolute top-6 left-6 bg-white/70 hover:bg-white/90 backdrop-blur-romantic rounded-full p-3 transition-all duration-300 shadow-romantic border-2 border-romantic-pink-200 z-10 min-h-[48px] min-w-[48px] flex items-center justify-center"
+            >
+              <ArrowLeft className="w-6 h-6 text-romantic-purple-600" />
+            </motion.button>
 
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-lg">
               <AnimatePresence mode="wait">
                 {!showFlamesResult ? (
                   <motion.div
@@ -497,27 +699,27 @@ const App = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
                     className="text-center"
                   >
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                      className="text-7xl mb-6"
+                      transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                      className="text-8xl mb-8"
                     >
                       🔥
                     </motion.div>
 
-                    <h2 className="text-5xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-red-400 bg-clip-text text-transparent mb-4" style={{ fontFamily: "'Pacifico', cursive" }}>
+                    <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-romantic-pink-500 via-romantic-lavender-500 to-romantic-purple-500 bg-clip-text text-transparent mb-4 tracking-wide" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.8px' }}>
                       FLAMES Calculator
                     </h2>
-                    <p className="text-pink-200 text-lg mb-10">Discover what the universe has planned for us</p>
+                    <p className="text-romantic-purple-600 text-lg mb-10 font-medium">Discover what the universe has planned for us</p>
 
-                    <div className="bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-red-500/10 backdrop-blur-lg border border-pink-300/20 rounded-2xl p-8 shadow-2xl">
+                    <div className="bg-white/70 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-3xl p-8 shadow-romantic-lg">
                       <div className="space-y-6">
                         <div>
-                          <label className="block text-pink-200 text-sm font-semibold mb-2 text-left">First Name</label>
+                          <label className="block text-romantic-purple-700 text-sm font-semibold mb-3 text-left">First Name</label>
                           <input
                             type="text"
                             value={flamesName1}
@@ -525,15 +727,15 @@ const App = () => {
                               setFlamesName1(e.target.value);
                               setShowFlamesResult(false);
                             }}
-                            className="w-full px-6 py-4 rounded-2xl bg-white/10 border-2 border-pink-300/30 text-white placeholder-pink-200/50 focus:outline-none focus:border-pink-400 text-center text-xl transition-all"
+                            className="w-full px-6 py-4 rounded-2xl bg-white/80 border-2 border-romantic-pink-300 text-gray-800 placeholder-romantic-pink-400 focus:outline-none focus:border-romantic-purple-400 focus:ring-2 focus:ring-romantic-purple-200 text-center text-xl transition-all duration-300 min-h-[56px]"
                             placeholder="Your name"
                           />
                         </div>
 
-                        <div className="text-3xl text-pink-300">💕</div>
+                        <div className="text-4xl text-romantic-pink-500">💕</div>
 
                         <div>
-                          <label className="block text-pink-200 text-sm font-semibold mb-2 text-left">Second Name</label>
+                          <label className="block text-romantic-purple-700 text-sm font-semibold mb-3 text-left">Second Name</label>
                           <input
                             type="text"
                             value={flamesName2}
@@ -541,17 +743,17 @@ const App = () => {
                               setFlamesName2(e.target.value);
                               setShowFlamesResult(false);
                             }}
-                            className="w-full px-6 py-4 rounded-2xl bg-white/10 border-2 border-pink-300/30 text-white placeholder-pink-200/50 focus:outline-none focus:border-pink-400 text-center text-xl transition-all"
+                            className="w-full px-6 py-4 rounded-2xl bg-white/80 border-2 border-romantic-lavender-300 text-gray-800 placeholder-romantic-lavender-400 focus:outline-none focus:border-romantic-purple-400 focus:ring-2 focus:ring-romantic-purple-200 text-center text-xl transition-all duration-300 min-h-[56px]"
                             placeholder="Their name"
                           />
                         </div>
                       </div>
 
                       <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={calculateFlames}
-                        className="w-full mt-8 bg-gradient-to-r from-pink-500 via-purple-500 to-red-500 hover:from-pink-600 hover:via-purple-600 hover:to-red-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all shadow-lg"
+                        className="w-full mt-8 bg-gradient-to-r from-romantic-pink-400 via-romantic-lavender-400 to-romantic-purple-400 hover:from-romantic-pink-500 hover:via-romantic-lavender-500 hover:to-romantic-purple-500 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 shadow-romantic-lg hover:shadow-romantic-glow min-h-[56px]"
                       >
                         Calculate Our Fate 🔥
                       </motion.button>
@@ -562,44 +764,38 @@ const App = () => {
                     key="result"
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+                    transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
                     className="text-center relative"
                   >
                     {/* Ambient glow effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-pink-500/30 via-purple-500/30 to-red-500/30 rounded-full blur-3xl animate-pulse" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-romantic-pink-300/40 via-romantic-lavender-300/40 to-romantic-purple-300/40 rounded-full blur-3xl" 
+                      style={{ animation: 'pulse 3s ease-in-out infinite' }}
+                    />
                     
-                    <div className="relative bg-gradient-to-br from-pink-500/20 via-purple-500/20 to-red-500/20 backdrop-blur-xl border-2 border-pink-300/30 rounded-3xl p-12 shadow-2xl">
+                    <div className="relative bg-white/70 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-3xl p-12 md:p-16 shadow-romantic-lg">
                       {/* Burning Heart Icon */}
                       <motion.div
                         initial={{ scale: 0, rotate: -180 }}
                         animate={{ scale: 1, rotate: 0 }}
-                        transition={{ delay: 0.2, duration: 0.8, type: "spring" }}
-                        className="mb-8"
+                        transition={{ delay: 0.3, duration: 1, ease: [0.4, 0, 0.2, 1] }}
+                        className="mb-10"
                       >
                         <div className="relative inline-block">
                           <motion.div
                             animate={{ 
-                              scale: [1, 1.2, 1],
+                              scale: [1, 1.15, 1],
                             }}
                             transition={{ 
                               repeat: Infinity, 
-                              duration: 2,
+                              duration: 2.5,
                               ease: "easeInOut"
                             }}
-                            className="text-8xl"
+                            className="text-9xl"
                           >
                             ❤️‍🔥
                           </motion.div>
-                          <motion.div
-                            animate={{ 
-                              opacity: [0.5, 1, 0.5],
-                            }}
-                            transition={{ 
-                              repeat: Infinity, 
-                              duration: 2,
-                              ease: "easeInOut"
-                            }}
-                            className="absolute inset-0 bg-gradient-to-br from-pink-500 via-red-500 to-orange-500 rounded-full blur-2xl opacity-50"
+                          <div className="absolute inset-0 bg-gradient-to-br from-romantic-pink-400 via-romantic-lavender-400 to-romantic-purple-400 rounded-full blur-3xl opacity-30"
+                            style={{ animation: 'pulse 2.5s ease-in-out infinite' }}
                           />
                         </div>
                       </motion.div>
@@ -608,15 +804,15 @@ const App = () => {
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 }}
+                        transition={{ delay: 0.6, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
                       >
-                        <h3 className="text-pink-200 text-xl mb-4 font-medium">Your Destiny:</h3>
+                        <h3 className="text-romantic-purple-600 text-xl mb-6 font-semibold tracking-wide">Your Destiny:</h3>
                         <motion.h1 
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ delay: 0.7, type: "spring", stiffness: 200 }}
-                          className="text-7xl font-bold bg-gradient-to-r from-pink-300 via-purple-300 to-red-300 bg-clip-text text-transparent mb-6 leading-tight"
-                          style={{ fontFamily: "'Pacifico', cursive" }}
+                          initial={{ scale: 0.8, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ delay: 0.9, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                          className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-romantic-pink-500 via-romantic-lavender-500 to-romantic-purple-500 bg-clip-text text-transparent mb-8 leading-tight tracking-wide"
+                          style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '1.2px' }}
                         >
                           {flamesResult}
                         </motion.h1>
@@ -624,10 +820,10 @@ const App = () => {
                         <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          transition={{ delay: 1 }}
-                          className="space-y-4"
+                          transition={{ delay: 1.2, duration: 0.7 }}
+                          className="space-y-6"
                         >
-                          <div className="text-2xl text-pink-200 font-medium">
+                          <div className="text-2xl text-romantic-purple-700 font-semibold">
                             {flamesName1} × {flamesName2}
                           </div>
                           
@@ -635,8 +831,8 @@ const App = () => {
                             <motion.p 
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
-                              transition={{ delay: 1.2 }}
-                              className="text-xl text-pink-100/80 leading-relaxed"
+                              transition={{ delay: 1.4, duration: 0.7 }}
+                              className="text-xl text-romantic-purple-600 leading-relaxed font-medium"
                             >
                               The stars have aligned perfectly for you two 💕
                             </motion.p>
@@ -645,8 +841,8 @@ const App = () => {
                             <motion.p 
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
-                              transition={{ delay: 1.2 }}
-                              className="text-xl text-pink-100/80 leading-relaxed"
+                              transition={{ delay: 1.4, duration: 0.7 }}
+                              className="text-xl text-romantic-purple-600 leading-relaxed font-medium"
                             >
                               Forever is written in the stars for you both 💍
                             </motion.p>
@@ -655,8 +851,8 @@ const App = () => {
                             <motion.p 
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
-                              transition={{ delay: 1.2 }}
-                              className="text-xl text-pink-100/80 leading-relaxed"
+                              transition={{ delay: 1.4, duration: 0.7 }}
+                              className="text-xl text-romantic-purple-600 leading-relaxed font-medium"
                             >
                               A beautiful bond of care and warmth 🌸
                             </motion.p>
@@ -665,8 +861,8 @@ const App = () => {
                             <motion.p 
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
-                              transition={{ delay: 1.2 }}
-                              className="text-xl text-pink-100/80 leading-relaxed"
+                              transition={{ delay: 1.4, duration: 0.7 }}
+                              className="text-xl text-romantic-purple-600 leading-relaxed font-medium"
                             >
                               The best kind of friendship that could bloom into more 🌈
                             </motion.p>
@@ -675,8 +871,8 @@ const App = () => {
                             <motion.p 
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
-                              transition={{ delay: 1.2 }}
-                              className="text-xl text-pink-100/80 leading-relaxed"
+                              transition={{ delay: 1.4, duration: 0.7 }}
+                              className="text-xl text-romantic-purple-600 leading-relaxed font-medium"
                             >
                               But who believes in FLAMES anyway? Our bond is beyond words 💫
                             </motion.p>
@@ -686,15 +882,15 @@ const App = () => {
                         <motion.button
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          transition={{ delay: 1.4 }}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
+                          transition={{ delay: 1.6, duration: 0.7 }}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
                           onClick={() => {
                             setShowFlamesResult(false);
                             setFlamesName1('Shashwat');
                             setFlamesName2('Trisha');
                           }}
-                          className="mt-8 bg-gradient-to-r from-pink-500/50 to-purple-500/50 hover:from-pink-500 hover:to-purple-500 text-white font-semibold py-3 px-8 rounded-2xl text-lg transition-all border border-pink-300/30"
+                          className="mt-10 bg-gradient-to-r from-romantic-pink-400/70 to-romantic-lavender-400/70 hover:from-romantic-pink-400 hover:to-romantic-lavender-400 text-white font-semibold py-4 px-10 rounded-2xl text-lg transition-all duration-300 border-2 border-romantic-pink-300 shadow-romantic min-h-[52px]"
                         >
                           Calculate Again
                         </motion.button>
@@ -704,104 +900,179 @@ const App = () => {
                 )}
               </AnimatePresence>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* CONFESSION PAGE */}
         {currentPage === 'confession' && (
-          <div className="animate-fade-in text-center">
-            <button onClick={() => setCurrentPage('puzzle')} className="absolute top-6 left-6 bg-white/10 hover:bg-white/20 rounded-full p-3 transition">
-              <ArrowLeft className="w-5 h-5" />
-            </button>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+            className="text-center"
+          >
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setCurrentPage('puzzle')}
+              className="absolute top-6 left-6 bg-white/70 hover:bg-white/90 backdrop-blur-romantic rounded-full p-3 transition-all duration-300 shadow-romantic border-2 border-romantic-pink-200 z-20 min-h-[48px] min-w-[48px] flex items-center justify-center"
+            >
+              <ArrowLeft className="w-6 h-6 text-romantic-purple-600" />
+            </motion.button>
 
-            <div className="pt-24 pb-8">
-              <h2 className="text-5xl font-bold text-yellow-300 mb-8" style={{ fontFamily: "'Pacifico', cursive" }}>What I've Been Wanting to Say</h2>
+            <div className="pt-24 pb-12 max-w-2xl mx-auto px-4">
+              <motion.h2
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-romantic-pink-600 via-romantic-lavender-500 to-romantic-purple-600 bg-clip-text text-transparent mb-8 tracking-wide"
+                style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.8px', lineHeight: 1.4 }}
+              >
+                What I've Been Wanting to Say
+              </motion.h2>
             </div>
 
-            <div className="bg-gradient-to-br from-pink-500/20 to-red-500/20 backdrop-blur-lg border border-pink-300/30 rounded-3xl p-8 mb-8">
-              <p className="text-2xl leading-relaxed text-yellow-200">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+              className="bg-white/70 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-3xl p-8 md:p-10 mb-8 max-w-2xl mx-auto shadow-romantic-lg"
+            >
+              <p className="text-xl md:text-2xl leading-relaxed text-romantic-purple-700 font-medium" style={{ lineHeight: 1.8 }}>
                 Mai kisi ke liye kabhi 250km durr bina bataye delhi nhi aaunga,<br />
                 siway tere, apne liye bhi nhi
               </p>
-            </div>
+            </motion.div>
 
-            <div className="bg-gradient-to-br from-pink-500/20 to-red-500/20 backdrop-blur-lg border border-pink-300/30 rounded-3xl p-8">
-              <p className="text-3xl leading-relaxed text-yellow-300 font-semibold" style={{ fontFamily: "'Pacifico', cursive" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+              className="bg-white/70 backdrop-blur-romantic border-2 border-romantic-lavender-200 rounded-3xl p-8 md:p-10 max-w-2xl mx-auto shadow-romantic-lg"
+            >
+              <p className="text-2xl md:text-3xl leading-relaxed bg-gradient-to-r from-romantic-pink-600 via-romantic-lavender-500 to-romantic-purple-600 bg-clip-text text-transparent font-bold" style={{ fontFamily: "'Poppins', sans-serif", lineHeight: 1.7 }}>
                 yaar tu mujhe genuinely bohot pasand,<br />
-                <span className="text-pink-300">KISMAT badal de</span>
+                <span className="text-romantic-pink-600">KISMAT badal de</span>
               </p>
-            </div>
+            </motion.div>
 
-            <div className="absolute bottom-40 right-8 text-3xl cursor-pointer hover:scale-125 transition animate-pulse" onClick={() => setShowDialPad(true)}>📞</div>
-          </div>
+            <motion.div
+              whileHover={{ scale: 1.3, rotate: 10 }}
+              className="absolute bottom-40 right-8 text-4xl cursor-pointer z-10"
+              onClick={() => setShowDialPad(true)}
+              style={{ animation: 'pulse 2s ease-in-out infinite' }}
+            >
+              📞
+            </motion.div>
+          </motion.div>
         )}
       </div>
 
       {/* Easter Egg Tooltip */}
-      {showEasterEgg && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-pink-500 to-red-400 px-8 py-6 rounded-2xl shadow-2xl z-[101] max-w-sm text-center animate-fade-in">
-          <p className="text-lg">{easterEggMessage}</p>
-        </div>
-      )}
+      <AnimatePresence>
+        {showEasterEgg && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: -20 }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-romantic border-2 border-romantic-pink-300 px-8 py-6 rounded-3xl shadow-romantic-lg z-[101] max-w-sm text-center"
+          >
+            <p className="text-lg text-romantic-purple-700 font-medium leading-relaxed">{easterEggMessage}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Dial Pad */}
-      {showDialPad && (
-        <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-[102]" onClick={() => setShowDialPad(false)}>
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-10 rounded-3xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-3xl font-bold text-yellow-300 mb-4 text-center" style={{ fontFamily: "'Pacifico', cursive" }}>Call karu bacha? 💕</h3>
-            <div className="text-4xl text-pink-400 font-bold tracking-wider mb-8 text-center">8619491164</div>
-            
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              {[1,2,3,4,5,6,7,8,9,'*',0,'#'].map((num) => (
-                <button key={num} className="w-16 h-16 rounded-full bg-pink-500/20 border-2 border-pink-500/50 text-2xl hover:bg-pink-500/40 transition">
-                  {num}
-                </button>
-              ))}
-            </div>
-            
-            <a href="tel:8619491164" className="block w-full bg-gradient-to-r from-green-500 to-green-600 py-4 rounded-full text-xl font-semibold text-center hover:scale-105 transition">
-              📞 Call Now
-            </a>
-            
-            <button onClick={() => setShowDialPad(false)} className="mt-4 w-full bg-white/10 py-2 rounded-full hover:bg-white/20 transition">
-              ✕
-            </button>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {showDialPad && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[102]"
+            onClick={() => setShowDialPad(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+              className="bg-white/95 backdrop-blur-romantic p-10 rounded-3xl shadow-romantic-lg border-2 border-romantic-pink-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="text-3xl font-bold text-romantic-purple-700 mb-6 text-center tracking-wide" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                Call karu bacha? 💕
+              </h3>
+              <div className="text-4xl text-romantic-pink-600 font-bold tracking-wider mb-8 text-center">8619491164</div>
+              
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                {[1,2,3,4,5,6,7,8,9,'*',0,'#'].map((num) => (
+                  <button
+                    key={num}
+                    className="w-16 h-16 rounded-2xl bg-romantic-pink-100 border-2 border-romantic-pink-300 text-2xl font-semibold text-romantic-purple-700 hover:bg-romantic-pink-200 hover:scale-105 transition-all duration-200 min-h-[64px]"
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+              
+              <a
+                href="tel:8619491164"
+                className="block w-full bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 py-4 rounded-2xl text-xl font-semibold text-white text-center hover:scale-[1.02] transition-all duration-300 shadow-romantic min-h-[56px] flex items-center justify-center"
+              >
+                📞 Call Now
+              </a>
+              
+              <button
+                onClick={() => setShowDialPad(false)}
+                className="mt-4 w-full bg-romantic-pink-100 hover:bg-romantic-pink-200 py-3 rounded-2xl text-romantic-purple-700 font-medium transition-all duration-200 min-h-[48px]"
+              >
+                ✕
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Enlarged Image Modal */}
-      {enlargedImage && (
-        <div 
-          className="fixed inset-0 bg-black/95 flex items-center justify-center z-[103] animate-fade-in"
-          onClick={() => setEnlargedImage(null)}
-        >
-          <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center p-4">
-            <img 
-              src={enlargedImage} 
-              alt="Enlarged view" 
-              className="max-w-full max-h-full object-contain rounded-2xl"
-              onClick={(e) => e.stopPropagation()}
-            />
-            <button 
-              onClick={() => setEnlargedImage(null)}
-              className="absolute top-8 right-8 bg-white/10 hover:bg-white/20 rounded-full p-4 text-3xl transition"
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {enlargedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-[103]"
+            onClick={() => setEnlargedImage(null)}
+          >
+            <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center p-6">
+              <motion.img
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                src={enlargedImage}
+                alt="Enlarged view"
+                className="max-w-full max-h-full object-contain rounded-3xl shadow-romantic-lg border-4 border-white/20"
+                onClick={(e) => e.stopPropagation()}
+              />
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setEnlargedImage(null)}
+                className="absolute top-8 right-8 bg-white/90 hover:bg-white backdrop-blur-romantic rounded-full p-4 text-3xl transition-all duration-300 shadow-romantic border-2 border-romantic-pink-200 min-h-[56px] min-w-[56px] flex items-center justify-center text-romantic-purple-700 font-bold"
+              >
+                ✕
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <style>{`
-        .animate-fade-in {
-          animation: fadeIn 0.6s ease-in;
-        }
-        
-        .animate-shake {
-          animation: shake 0.5s;
-        }
-        
         @keyframes fadeIn {
           from {
             opacity: 0;
@@ -817,6 +1088,34 @@ const App = () => {
           0%, 100% { transform: translateX(0); }
           10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
           20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+        
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-20px) rotate(5deg);
+          }
+        }
+        
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 0.8;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.05);
+          }
+        }
+        
+        .animate-fade-in {
+          animation: fadeIn 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .animate-shake {
+          animation: shake 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
       `}</style>
     </div>
