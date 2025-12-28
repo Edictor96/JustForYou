@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Music, ArrowLeft, Heart } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const App = () => {
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -12,6 +13,12 @@ const App = () => {
   const [showDialPad, setShowDialPad] = useState(false);
   const [enlargedImage, setEnlargedImage] = useState(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
+  
+  // FLAMES Calculator State
+  const [flamesName1, setFlamesName1] = useState('Shashwat');
+  const [flamesName2, setFlamesName2] = useState('Trisha');
+  const [flamesResult, setFlamesResult] = useState(null);
+  const [showFlamesResult, setShowFlamesResult] = useState(false);
 
   // Jigsaw Puzzle State - 3x3 grid (9 pieces)
   const [puzzlePieces, setPuzzlePieces] = useState([]);
@@ -38,7 +45,7 @@ const App = () => {
   }, []);
 
   // Page navigation
-  const pages = ['home', 'theater', 'puzzle', 'confession'];
+  const pages = ['home', 'theater', 'puzzle', 'confession', 'flames'];
   const currentPageIndex = pages.indexOf(currentPage);
   const progress = (currentPageIndex / (pages.length - 1)) * 100;
 
@@ -71,8 +78,6 @@ const App = () => {
   const easterEggs = {
     brooklyn99: "NINE NINE! Just like Jake loves Amy, that's how I feel about you",
     fightclub: "The first rule of loving you? Never stop. The second rule? Never stop",
-    butterchicken: "You're the butter to my chicken. Perfect together",
-    biryani: "You're the perfect blend of everything I need, just like Hyderabadi Biryani",
     fir: "You've stolen my heart, and I'm not filing an FIR",
     dietcoke: "You're my favorite thing, just like your Diet Coke"
   };
@@ -93,6 +98,87 @@ const App = () => {
       setPasswordError(true);
       setTimeout(() => setPasswordError(false), 2000);
     }
+  };
+
+  // Auto-calculate FLAMES on mount or name change
+  useEffect(() => {
+    if (currentPage === 'flames' && flamesName1 && flamesName2) {
+      const calculateFlames = () => {
+        const name1 = flamesName1.toLowerCase().replace(/\s/g, '');
+        const name2 = flamesName2.toLowerCase().replace(/\s/g, '');
+        
+        if (!name1 || !name2) return;
+        
+        let str1 = name1.split('');
+        let str2 = name2.split('');
+        
+        // Remove common characters
+        for (let i = 0; i < str1.length; i++) {
+          for (let j = 0; j < str2.length; j++) {
+            if (str1[i] === str2[j]) {
+              str1[i] = '';
+              str2[j] = '';
+              break;
+            }
+          }
+        }
+        
+        const count = str1.filter(c => c !== '').length + str2.filter(c => c !== '').length;
+        const flames = ['Friend', 'Love', 'Affection', 'Marriage', 'Enemy', 'Sister'];
+        let flamesArr = [...flames];
+        
+        let index = 0;
+        while (flamesArr.length > 1) {
+          index = (index + count - 1) % flamesArr.length;
+          flamesArr.splice(index, 1);
+          if (index === flamesArr.length) index = 0;
+        }
+        
+        setFlamesResult(flamesArr[0]);
+        setShowFlamesResult(true);
+      };
+
+      const timer = setTimeout(() => {
+        calculateFlames();
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [currentPage, flamesName1, flamesName2]);
+
+  // Manual FLAMES calculation for button click
+  const calculateFlames = () => {
+    const name1 = flamesName1.toLowerCase().replace(/\s/g, '');
+    const name2 = flamesName2.toLowerCase().replace(/\s/g, '');
+    
+    if (!name1 || !name2) return;
+    
+    let str1 = name1.split('');
+    let str2 = name2.split('');
+    
+    // Remove common characters
+    for (let i = 0; i < str1.length; i++) {
+      for (let j = 0; j < str2.length; j++) {
+        if (str1[i] === str2[j]) {
+          str1[i] = '';
+          str2[j] = '';
+          break;
+        }
+      }
+    }
+    
+    const count = str1.filter(c => c !== '').length + str2.filter(c => c !== '').length;
+    const flames = ['Friend', 'Love', 'Affection', 'Marriage', 'Enemy', 'Sister'];
+    let flamesArr = [...flames];
+    
+    let index = 0;
+    while (flamesArr.length > 1) {
+      index = (index + count - 1) % flamesArr.length;
+      flamesArr.splice(index, 1);
+      if (index === flamesArr.length) index = 0;
+    }
+    
+    setFlamesResult(flamesArr[0]);
+    setShowFlamesResult(true);
   };
 
   return (
@@ -223,7 +309,7 @@ const App = () => {
               scrolling="no"
               frameBorder="no"
               allow="autoplay"
-              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%3Aplaylists%3A2163661529%3Fsecret_token%3Ds-uIIJQ0rsHC4&color=%23ff5500&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+              src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%3Aplaylists%3A2163661529%3Fsecret_token%3Ds-uIIJQ0rsHC4&color=%23ff5500&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
               className="rounded-lg"
               title="SoundCloud Player"
             />
@@ -266,11 +352,21 @@ const App = () => {
                   <p className="text-white/70 text-sm">Solve to reveal something special</p>
                 </div>
               </div>
+
+              <div 
+                onClick={() => setCurrentPage('flames')}
+                className="bg-gradient-to-r from-red-500/20 to-purple-500/20 backdrop-blur-lg border border-white/10 rounded-3xl p-6 cursor-pointer hover:translate-x-2 transition-all duration-300 hover:shadow-2xl hover:shadow-pink-500/30 flex items-center gap-5"
+              >
+                <div className="bg-white/10 rounded-2xl p-4 text-4xl">🔥</div>
+                <div>
+                  <h3 className="text-2xl font-semibold text-yellow-300">FLAMES Calculator</h3>
+                  <p className="text-white/70 text-sm">Discover our destiny</p>
+                </div>
+              </div>
             </div>
 
             {/* Easter eggs */}
             <div className="absolute top-8 right-8 text-2xl cursor-pointer hover:scale-125 transition" onClick={() => triggerEasterEgg('brooklyn99')}>🚔</div>
-            <div className="absolute bottom-32 left-8 text-xl cursor-pointer hover:scale-125 transition" onClick={() => triggerEasterEgg('butterchicken')}>🍗</div>
           </div>
         )}
 
@@ -288,37 +384,38 @@ const App = () => {
 
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div 
-                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/1000039561.jpg')}
+                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden rounded-2xl"
+                onClick={() => setEnlargedImage('/images/image1.jpg')}
               >
-                <img src="/1000039561.jpg" alt="Memory 1" className="w-full h-full object-cover" />
+                <img src="/images/image1.jpg" alt="Memory 1" className="w-full h-full object-cover" />
               </div>
               <div 
-                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/1000035420.heic')}
+                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden rounded-2xl"
+                onClick={() => setEnlargedImage('/images/image2.jpg')}
               >
-                <img src="/1000035420.heic" alt="Memory 2" className="w-full h-full object-cover" />
+                <img src="/images/image2.jpg" alt="Memory 2" className="w-full h-full object-cover" />
               </div>
               <div 
-                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-                onClick={() => setEnlargedImage('/1000035421.heic')}
+                className="aspect-square flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden rounded-2xl"
+                onClick={() => setEnlargedImage('/images/image3.jpg')}
               >
-                <img src="/1000035421.heic" alt="Memory 3" className="w-full h-full object-cover" />
+                <img src="/images/image3.jpg" alt="Memory 3" className="w-full h-full object-cover" />
               </div>
-              <div className="aspect-square flex items-center justify-center overflow-hidden relative">
+              <div className="aspect-square flex items-center justify-center overflow-hidden relative rounded-2xl">
                 <iframe
                   src="https://drive.google.com/file/d/1J_LcJLUDkzv_HIuQbnTlTZS57Lb2OyRW/preview"
                   className="absolute inset-0 w-full h-full border-0"
                   style={{ transform: 'scale(1.5)', transformOrigin: 'center' }}
                   title="Video Theater Memory"
                   allow="autoplay"
+                  loading="eager"
+                  preload="auto"
                   allowFullScreen
                 />
               </div>
             </div>
 
             <div className="absolute top-28 right-6 text-xl cursor-pointer hover:scale-125 transition" onClick={() => triggerEasterEgg('fightclub')}>🥊</div>
-            <div className="absolute bottom-40 left-6 text-lg cursor-pointer hover:scale-125 transition" onClick={() => triggerEasterEgg('biryani')}>🍛</div>
           </div>
         )}
 
@@ -405,6 +502,231 @@ const App = () => {
             )}
 
             <div className="absolute top-32 left-8 text-lg cursor-pointer hover:scale-125 transition" onClick={() => triggerEasterEgg('fir')}>🚓</div>
+          </div>
+        )}
+
+        {/* FLAMES CALCULATOR PAGE */}
+        {currentPage === 'flames' && (
+          <div className="animate-fade-in min-h-screen flex items-center justify-center px-4">
+            <button onClick={() => setCurrentPage('home')} className="absolute top-6 left-6 bg-white/10 hover:bg-white/20 rounded-full p-3 transition z-10">
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+
+            <div className="w-full max-w-md">
+              <AnimatePresence mode="wait">
+                {!showFlamesResult ? (
+                  <motion.div
+                    key="input"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center"
+                  >
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                      className="text-7xl mb-6"
+                    >
+                      🔥
+                    </motion.div>
+
+                    <h2 className="text-5xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-red-400 bg-clip-text text-transparent mb-4" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      FLAMES Calculator
+                    </h2>
+                    <p className="text-pink-200 text-lg mb-10">Discover what the universe has planned for us</p>
+
+                    <div className="bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-red-500/10 backdrop-blur-lg border border-pink-300/20 rounded-2xl p-8 shadow-2xl">
+                      <div className="space-y-6">
+                        <div>
+                          <label className="block text-pink-200 text-sm font-semibold mb-2 text-left">First Name</label>
+                          <input
+                            type="text"
+                            value={flamesName1}
+                            onChange={(e) => {
+                              setFlamesName1(e.target.value);
+                              setShowFlamesResult(false);
+                            }}
+                            className="w-full px-6 py-4 rounded-2xl bg-white/10 border-2 border-pink-300/30 text-white placeholder-pink-200/50 focus:outline-none focus:border-pink-400 text-center text-xl transition-all"
+                            placeholder="Your name"
+                          />
+                        </div>
+
+                        <div className="text-3xl text-pink-300">💕</div>
+
+                        <div>
+                          <label className="block text-pink-200 text-sm font-semibold mb-2 text-left">Second Name</label>
+                          <input
+                            type="text"
+                            value={flamesName2}
+                            onChange={(e) => {
+                              setFlamesName2(e.target.value);
+                              setShowFlamesResult(false);
+                            }}
+                            className="w-full px-6 py-4 rounded-2xl bg-white/10 border-2 border-pink-300/30 text-white placeholder-pink-200/50 focus:outline-none focus:border-pink-400 text-center text-xl transition-all"
+                            placeholder="Their name"
+                          />
+                        </div>
+                      </div>
+
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={calculateFlames}
+                        className="w-full mt-8 bg-gradient-to-r from-pink-500 via-purple-500 to-red-500 hover:from-pink-600 hover:via-purple-600 hover:to-red-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all shadow-lg"
+                      >
+                        Calculate Our Fate 🔥
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="result"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+                    className="text-center relative"
+                  >
+                    {/* Ambient glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-pink-500/30 via-purple-500/30 to-red-500/30 rounded-full blur-3xl animate-pulse" />
+                    
+                    <div className="relative bg-gradient-to-br from-pink-500/20 via-purple-500/20 to-red-500/20 backdrop-blur-xl border-2 border-pink-300/30 rounded-3xl p-12 shadow-2xl">
+                      {/* Burning Heart Icon */}
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ delay: 0.2, duration: 0.8, type: "spring" }}
+                        className="mb-8"
+                      >
+                        <div className="relative inline-block">
+                          <motion.div
+                            animate={{ 
+                              scale: [1, 1.2, 1],
+                            }}
+                            transition={{ 
+                              repeat: Infinity, 
+                              duration: 2,
+                              ease: "easeInOut"
+                            }}
+                            className="text-8xl"
+                          >
+                            ❤️‍🔥
+                          </motion.div>
+                          <motion.div
+                            animate={{ 
+                              opacity: [0.5, 1, 0.5],
+                            }}
+                            transition={{ 
+                              repeat: Infinity, 
+                              duration: 2,
+                              ease: "easeInOut"
+                            }}
+                            className="absolute inset-0 bg-gradient-to-br from-pink-500 via-red-500 to-orange-500 rounded-full blur-2xl opacity-50"
+                          />
+                        </div>
+                      </motion.div>
+
+                      {/* Result */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 }}
+                      >
+                        <h3 className="text-pink-200 text-xl mb-4 font-medium">Your Destiny:</h3>
+                        <motion.h1 
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.7, type: "spring", stiffness: 200 }}
+                          className="text-7xl font-bold bg-gradient-to-r from-pink-300 via-purple-300 to-red-300 bg-clip-text text-transparent mb-6 leading-tight"
+                          style={{ fontFamily: "'Pacifico', cursive" }}
+                        >
+                          {flamesResult}
+                        </motion.h1>
+                        
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 1 }}
+                          className="space-y-4"
+                        >
+                          <div className="text-2xl text-pink-200 font-medium">
+                            {flamesName1} × {flamesName2}
+                          </div>
+                          
+                          {flamesResult === 'Love' && (
+                            <motion.p 
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ delay: 1.2 }}
+                              className="text-xl text-pink-100/80 leading-relaxed"
+                            >
+                              The stars have aligned perfectly for you two 💕
+                            </motion.p>
+                          )}
+                          {flamesResult === 'Marriage' && (
+                            <motion.p 
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ delay: 1.2 }}
+                              className="text-xl text-pink-100/80 leading-relaxed"
+                            >
+                              Forever is written in the stars for you both 💍
+                            </motion.p>
+                          )}
+                          {flamesResult === 'Affection' && (
+                            <motion.p 
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ delay: 1.2 }}
+                              className="text-xl text-pink-100/80 leading-relaxed"
+                            >
+                              A beautiful bond of care and warmth 🌸
+                            </motion.p>
+                          )}
+                          {flamesResult === 'Friend' && (
+                            <motion.p 
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ delay: 1.2 }}
+                              className="text-xl text-pink-100/80 leading-relaxed"
+                            >
+                              The best kind of friendship that could bloom into more 🌈
+                            </motion.p>
+                          )}
+                          {(flamesResult === 'Enemy' || flamesResult === 'Sister') && (
+                            <motion.p 
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ delay: 1.2 }}
+                              className="text-xl text-pink-100/80 leading-relaxed"
+                            >
+                              But who believes in FLAMES anyway? Our bond is beyond words 💫
+                            </motion.p>
+                          )}
+                        </motion.div>
+
+                        <motion.button
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 1.4 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => {
+                            setShowFlamesResult(false);
+                            setFlamesName1('Shashwat');
+                            setFlamesName2('Trisha');
+                          }}
+                          className="mt-8 bg-gradient-to-r from-pink-500/50 to-purple-500/50 hover:from-pink-500 hover:to-purple-500 text-white font-semibold py-3 px-8 rounded-2xl text-lg transition-all border border-pink-300/30"
+                        >
+                          Calculate Again
+                        </motion.button>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         )}
 
