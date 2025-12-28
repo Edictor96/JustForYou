@@ -100,57 +100,12 @@ const App = () => {
     }
   };
 
-  // Auto-calculate FLAMES on mount or name change
-  useEffect(() => {
-    if (currentPage === 'flames' && flamesName1 && flamesName2) {
-      const calculateFlames = () => {
-        const name1 = flamesName1.toLowerCase().replace(/\s/g, '');
-        const name2 = flamesName2.toLowerCase().replace(/\s/g, '');
-        
-        if (!name1 || !name2) return;
-        
-        let str1 = name1.split('');
-        let str2 = name2.split('');
-        
-        // Remove common characters
-        for (let i = 0; i < str1.length; i++) {
-          for (let j = 0; j < str2.length; j++) {
-            if (str1[i] === str2[j]) {
-              str1[i] = '';
-              str2[j] = '';
-              break;
-            }
-          }
-        }
-        
-        const count = str1.filter(c => c !== '').length + str2.filter(c => c !== '').length;
-        const flames = ['Friend', 'Love', 'Affection', 'Marriage', 'Enemy', 'Sister'];
-        let flamesArr = [...flames];
-        
-        let index = 0;
-        while (flamesArr.length > 1) {
-          index = (index + count - 1) % flamesArr.length;
-          flamesArr.splice(index, 1);
-          if (index === flamesArr.length) index = 0;
-        }
-        
-        setFlamesResult(flamesArr[0]);
-        setShowFlamesResult(true);
-      };
-
-      const timer = setTimeout(() => {
-        calculateFlames();
-      }, 800);
-      return () => clearTimeout(timer);
-    }
-  }, [currentPage, flamesName1, flamesName2]);
-
-  // Manual FLAMES calculation for button click
-  const calculateFlames = () => {
-    const name1 = flamesName1.toLowerCase().replace(/\s/g, '');
-    const name2 = flamesName2.toLowerCase().replace(/\s/g, '');
+  // Helper function for FLAMES calculation logic
+  const performFlamesCalculation = (name1Input, name2Input) => {
+    const name1 = name1Input.toLowerCase().replace(/\s/g, '');
+    const name2 = name2Input.toLowerCase().replace(/\s/g, '');
     
-    if (!name1 || !name2) return;
+    if (!name1 || !name2) return null;
     
     let str1 = name1.split('');
     let str2 = name2.split('');
@@ -177,8 +132,30 @@ const App = () => {
       if (index === flamesArr.length) index = 0;
     }
     
-    setFlamesResult(flamesArr[0]);
-    setShowFlamesResult(true);
+    return flamesArr[0];
+  };
+
+  // Auto-calculate FLAMES on mount or name change
+  useEffect(() => {
+    if (currentPage === 'flames' && flamesName1 && flamesName2) {
+      const timer = setTimeout(() => {
+        const result = performFlamesCalculation(flamesName1, flamesName2);
+        if (result) {
+          setFlamesResult(result);
+          setShowFlamesResult(true);
+        }
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [currentPage, flamesName1, flamesName2]);
+
+  // Manual FLAMES calculation for button click
+  const calculateFlames = () => {
+    const result = performFlamesCalculation(flamesName1, flamesName2);
+    if (result) {
+      setFlamesResult(result);
+      setShowFlamesResult(true);
+    }
   };
 
   return (
