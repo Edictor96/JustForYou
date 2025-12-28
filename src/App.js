@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Music, ArrowLeft, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -13,6 +13,8 @@ const App = () => {
   const [showDialPad, setShowDialPad] = useState(false);
   const [enlargedImage, setEnlargedImage] = useState(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
+  const [soundCloudWidget, setSoundCloudWidget] = useState(null);
+  const [videoEnded, setVideoEnded] = useState(false);
   
   // FLAMES Calculator State
   const [flamesName1, setFlamesName1] = useState('Shashwat');
@@ -158,6 +160,44 @@ const App = () => {
     }
   };
 
+  // Initialize SoundCloud Widget API for persistent autoplay
+  useEffect(() => {
+    // Load SoundCloud Widget API
+    const script = document.createElement('script');
+    script.src = 'https://w.soundcloud.com/player/api.js';
+    script.async = true;
+    script.onload = () => {
+      const iframe = document.getElementById('soundcloud-widget');
+      if (iframe && window.SC) {
+        const widget = window.SC.Widget(iframe);
+        setSoundCloudWidget(widget);
+        
+        // Auto-play when ready
+        widget.bind(window.SC.Widget.Events.READY, () => {
+          widget.play();
+        });
+      }
+    };
+    document.body.appendChild(script);
+    
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, []);
+
+  // Auto-navigate from puzzle video to confession when video ends
+  useEffect(() => {
+    if (puzzleSolved && videoEnded) {
+      const timer = setTimeout(() => {
+        setCurrentPage('confession');
+        setVideoEnded(false);
+      }, 1000); // 1 second delay for smooth transition
+      return () => clearTimeout(timer);
+    }
+  }, [puzzleSolved, videoEnded]);
+
   return (
     <div className="min-h-screen bg-romantic-pink-50 text-gray-800 overflow-hidden relative grain-overlay font-romantic">
       {/* Ambient romantic background with gradient blooms */}
@@ -289,7 +329,20 @@ const App = () => {
         />
       </div>
 
-      {/* Floating Music Player */}
+      {/* Persistent SoundCloud Player (Hidden) */}
+      <div className="fixed bottom-0 left-0 w-0 h-0 overflow-hidden opacity-0 pointer-events-none">
+        <iframe
+          id="soundcloud-widget"
+          width="100%"
+          height="166"
+          scrolling="no"
+          frameBorder="no"
+          allow="autoplay"
+          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%3Aplaylists%3A2163661529%3Fsecret_token%3Ds-uIIJQ0rsHC4&color=%23ff8fab&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+        />
+      </div>
+
+      {/* Floating Music Player Button */}
       <motion.div
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -304,7 +357,7 @@ const App = () => {
         </div>
       </motion.div>
 
-      {/* SoundCloud Player Modal */}
+      {/* SoundCloud Player Visual Display */}
       <AnimatePresence>
         {isPlayerVisible && (
           <motion.div
