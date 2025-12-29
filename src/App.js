@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Music, ArrowLeft, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -14,6 +14,12 @@ const App = () => {
   const [enlargedImage, setEnlargedImage] = useState(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  
+  // Refs for SoundCloud widget and video iframes
+  const soundCloudWidgetRef = useRef(null);
+  const theaterVideoRef = useRef(null);
+  const puzzleVideoRef = useRef(null);
   
   // FLAMES Calculator State
   const [flamesName1, setFlamesName1] = useState('Shashwat');
@@ -169,6 +175,7 @@ const App = () => {
       const iframe = document.getElementById('soundcloud-widget');
       if (iframe && window.SC) {
         const widget = window.SC.Widget(iframe);
+        soundCloudWidgetRef.current = widget;
         
         // Auto-play when ready
         widget.bind(window.SC.Widget.Events.READY, () => {
@@ -185,16 +192,44 @@ const App = () => {
     };
   }, []);
 
+  // Control music based on video playback state
+  useEffect(() => {
+    const widget = soundCloudWidgetRef.current;
+    if (!widget) return;
+
+    if (isVideoPlaying) {
+      // Pause music when video is playing
+      widget.pause();
+    } else {
+      // Resume music when video stops
+      widget.play();
+    }
+  }, [isVideoPlaying]);
+
+  // Detect when user navigates away from pages with videos
+  useEffect(() => {
+    // Reset video playing state when leaving theater or puzzle pages
+    if (currentPage !== 'theater' && currentPage !== 'puzzle') {
+      setIsVideoPlaying(false);
+    }
+  }, [currentPage]);
+
   // Auto-navigate from puzzle video to confession when video ends
   useEffect(() => {
     if (puzzleSolved && videoEnded) {
       const timer = setTimeout(() => {
         setCurrentPage('confession');
         setVideoEnded(false);
+        setIsVideoPlaying(false); // Resume music when moving to confession
       }, 1000); // 1 second delay for smooth transition
       return () => clearTimeout(timer);
     }
   }, [puzzleSolved, videoEnded]);
+
+  // Helper function to handle video play/pause
+  const handleVideoInteraction = (isPlaying) => {
+    setIsVideoPlaying(isPlaying);
+  };
 
   return (
     <div className="min-h-screen bg-romantic-pink-100 text-gray-800 overflow-hidden relative grain-overlay font-romantic">
@@ -255,22 +290,22 @@ const App = () => {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-              className="text-center mb-12"
+              className="text-center mb-8 sm:mb-12 px-4"
             >
               <motion.div
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="text-8xl mb-6"
+                className="text-6xl sm:text-7xl md:text-8xl mb-4 sm:mb-6"
               >
                 💕
               </motion.div>
-              <h1 className="text-5xl md:text-6xl font-bold text-romantic-purple-700 mb-4 tracking-wide" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.5px' }}>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-romantic-purple-700 mb-3 sm:mb-4 tracking-wide px-2" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.5px' }}>
                 This is for you
               </h1>
-              <h2 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-romantic-purple-600 via-romantic-lavender-500 to-romantic-violet-600 bg-clip-text text-transparent mb-6" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '1px' }}>
+              <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold bg-gradient-to-r from-romantic-purple-600 via-romantic-lavender-500 to-romantic-violet-600 bg-clip-text text-transparent mb-4 sm:mb-6 px-2" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '1px' }}>
                 Trisha
               </h2>
-              <p className="text-2xl text-romantic-purple-700 mb-8 font-medium">Happy New Year 2026! 🎊</p>
+              <p className="text-xl sm:text-2xl text-romantic-purple-700 mb-6 sm:mb-8 font-medium px-2">Happy New Year 2026! 🎊</p>
             </motion.div>
 
             <motion.form
@@ -278,18 +313,18 @@ const App = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
               onSubmit={handlePasswordSubmit}
-              className="bg-white/60 backdrop-blur-romantic rounded-3xl p-8 border-2 border-romantic-purple-300 shadow-romantic-lg"
+              className="bg-white/60 backdrop-blur-romantic rounded-2xl sm:rounded-3xl p-6 sm:p-8 border-2 border-romantic-purple-300 shadow-romantic-lg"
             >
-              <label className="block text-romantic-purple-700 text-lg font-semibold mb-4 text-center">
+              <label className="block text-romantic-purple-700 text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-center">
                 Enter the magic word 🔐
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-6 py-4 rounded-2xl bg-white/70 border-2 ${
+                className={`w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-white/70 border-2 ${
                   passwordError ? 'border-red-500 animate-shake' : 'border-romantic-purple-400'
-                } text-gray-800 placeholder-romantic-purple-400 focus:outline-none focus:border-romantic-violet-500 focus:ring-2 focus:ring-romantic-purple-300 text-center text-xl transition-all duration-300`}
+                } text-gray-800 placeholder-romantic-purple-400 focus:outline-none focus:border-romantic-violet-500 focus:ring-2 focus:ring-romantic-purple-300 text-center text-lg sm:text-xl transition-all duration-300 min-h-[48px]`}
                 placeholder="Hint: Your name, year, or celebration"
                 autoFocus
               />
@@ -297,20 +332,20 @@ const App = () => {
                 <motion.p
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-red-600 text-center mt-3 font-medium"
+                  className="text-red-600 text-center mt-2 sm:mt-3 font-medium text-sm sm:text-base"
                 >
                   Oops! Try again 💗
                 </motion.p>
               )}
               <button
                 type="submit"
-                className="w-full mt-6 bg-gradient-to-r from-romantic-purple-500 via-romantic-violet-500 to-romantic-lavender-500 hover:from-romantic-purple-600 hover:via-romantic-violet-600 hover:to-romantic-lavender-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-romantic-glow min-h-[48px]"
+                className="w-full mt-5 sm:mt-6 bg-gradient-to-r from-romantic-purple-500 via-romantic-violet-500 to-romantic-lavender-500 hover:from-romantic-purple-600 hover:via-romantic-violet-600 hover:to-romantic-lavender-600 text-white font-bold py-3 sm:py-4 px-6 rounded-xl sm:rounded-2xl text-lg sm:text-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-romantic-glow min-h-[52px] active:scale-95"
               >
                 tu bohot awesome hai 💖
               </button>
             </motion.form>
 
-            <div className="text-center mt-8 text-romantic-purple-700 text-sm font-medium">
+            <div className="text-center mt-6 sm:mt-8 text-romantic-purple-700 text-xs sm:text-sm font-medium">
               Made with love ❤️
             </div>
           </div>
@@ -345,13 +380,16 @@ const App = () => {
       <motion.div
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 z-50 cursor-pointer"
+        className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 cursor-pointer"
         onClick={() => setIsPlayerVisible(!isPlayerVisible)}
       >
-        <div className="bg-gradient-to-r from-romantic-purple-500 to-romantic-violet-500 rounded-full px-6 py-4 shadow-romantic-lg flex items-center gap-3 hover:shadow-romantic-glow transition-all duration-300 min-h-[48px]">
-          <Music className="w-5 h-5 text-white animate-pulse" />
-          <span className="text-sm text-white font-semibold">
+        <div className="bg-gradient-to-r from-romantic-purple-500 to-romantic-violet-500 rounded-full px-4 py-3 sm:px-6 sm:py-4 shadow-romantic-lg flex items-center gap-2 sm:gap-3 hover:shadow-romantic-glow transition-all duration-300 min-h-[44px] sm:min-h-[48px]">
+          <Music className="w-4 h-4 sm:w-5 sm:h-5 text-white animate-pulse flex-shrink-0" />
+          <span className="text-xs sm:text-sm text-white font-semibold hidden xs:inline">
             {isPlayerVisible ? 'Hide Player' : 'Playing: Our Playlist'}
+          </span>
+          <span className="text-xs sm:text-sm text-white font-semibold xs:hidden">
+            {isPlayerVisible ? 'Hide' : 'Music'}
           </span>
         </div>
       </motion.div>
@@ -364,13 +402,13 @@ const App = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-            className="fixed bottom-24 right-6 z-50"
+            className="fixed bottom-16 sm:bottom-20 md:bottom-24 right-4 sm:right-6 z-50 max-w-[calc(100vw-2rem)] sm:max-w-none"
           >
-            <div className="bg-white/80 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-3xl shadow-romantic-lg p-6 w-80">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <Music className="w-6 h-6 text-romantic-pink-500" />
-                  <span className="text-base font-semibold text-romantic-purple-700">Our Special Playlist</span>
+            <div className="bg-white/80 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-2xl sm:rounded-3xl shadow-romantic-lg p-4 sm:p-6 w-full sm:w-80">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  <Music className="w-5 h-5 sm:w-6 sm:h-6 text-romantic-pink-500 flex-shrink-0" />
+                  <span className="text-sm sm:text-base font-semibold text-romantic-purple-700 truncate">Our Special Playlist</span>
                 </div>
                 <button
                   onClick={(e) => {
@@ -407,12 +445,12 @@ const App = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
           >
-            <div className="text-center pt-20 pb-12">
+            <div className="text-center pt-16 sm:pt-20 pb-8 sm:pb-12 px-4">
               <motion.h1
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-                className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-romantic-pink-500 via-romantic-lavender-500 to-romantic-purple-500 bg-clip-text text-transparent mb-4 tracking-wide"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-romantic-pink-500 via-romantic-lavender-500 to-romantic-purple-500 bg-clip-text text-transparent mb-3 sm:mb-4 tracking-wide px-2"
                 style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '1px' }}
               >
                 For Trisha
@@ -421,7 +459,7 @@ const App = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.7 }}
-                className="text-romantic-purple-600 text-xl font-medium mb-6"
+                className="text-romantic-purple-600 text-lg sm:text-xl font-medium mb-4 sm:mb-6 px-2"
               >
                 Your special New Year 2026 gift 🎊
               </motion.p>
@@ -429,23 +467,24 @@ const App = () => {
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
-                <Heart className="w-16 h-16 mx-auto mt-4 text-romantic-pink-500" />
+                <Heart className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto mt-2 sm:mt-4 text-romantic-pink-500" />
               </motion.div>
             </div>
 
-            <div className="space-y-5 mt-12 max-w-xl mx-auto">
+            <div className="space-y-4 sm:space-y-5 mt-8 sm:mt-12 max-w-xl mx-auto px-4 sm:px-6">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 whileHover={{ scale: 1.02, x: 8 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setCurrentPage('flames')}
-                className="bg-white/50 backdrop-blur-romantic border-2 border-romantic-purple-300 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
+                className="bg-white/50 backdrop-blur-romantic border-2 border-romantic-purple-300 rounded-2xl sm:rounded-3xl p-4 sm:p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg active:shadow-romantic flex items-center gap-4 sm:gap-6 min-h-[80px] sm:min-h-[90px]"
               >
-                <div className="bg-gradient-to-br from-romantic-purple-300 to-romantic-violet-300 rounded-2xl p-4 text-4xl shadow-romantic">🔥</div>
-                <div>
-                  <h3 className="text-2xl font-semibold text-romantic-purple-700 mb-1">FLAMES Calculator</h3>
-                  <p className="text-romantic-purple-600 text-base">Discover our destiny</p>
+                <div className="bg-gradient-to-br from-romantic-purple-300 to-romantic-violet-300 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-3xl sm:text-4xl shadow-romantic flex-shrink-0">🔥</div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-romantic-purple-700 mb-0.5 sm:mb-1 truncate">FLAMES Calculator</h3>
+                  <p className="text-romantic-purple-600 text-sm sm:text-base">Discover our destiny</p>
                 </div>
               </motion.div>
 
@@ -454,13 +493,14 @@ const App = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 whileHover={{ scale: 1.02, x: 8 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setCurrentPage('theater')}
-                className="bg-white/50 backdrop-blur-romantic border-2 border-romantic-lavender-300 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
+                className="bg-white/50 backdrop-blur-romantic border-2 border-romantic-lavender-300 rounded-2xl sm:rounded-3xl p-4 sm:p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg active:shadow-romantic flex items-center gap-4 sm:gap-6 min-h-[80px] sm:min-h-[90px]"
               >
-                <div className="bg-gradient-to-br from-romantic-lavender-300 to-romantic-violet-200 rounded-2xl p-4 text-4xl shadow-romantic">🎬</div>
-                <div>
-                  <h3 className="text-2xl font-semibold text-romantic-lavender-700 mb-1">Video Theater</h3>
-                  <p className="text-romantic-lavender-600 text-base">Our moments together</p>
+                <div className="bg-gradient-to-br from-romantic-lavender-300 to-romantic-violet-200 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-3xl sm:text-4xl shadow-romantic flex-shrink-0">🎬</div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-romantic-lavender-700 mb-0.5 sm:mb-1 truncate">Video Theater</h3>
+                  <p className="text-romantic-lavender-600 text-sm sm:text-base">Our moments together</p>
                 </div>
               </motion.div>
 
@@ -469,13 +509,14 @@ const App = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.7, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 whileHover={{ scale: 1.02, x: 8 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setCurrentPage('puzzle')}
-                className="bg-white/50 backdrop-blur-romantic border-2 border-romantic-pink-300 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
+                className="bg-white/50 backdrop-blur-romantic border-2 border-romantic-pink-300 rounded-2xl sm:rounded-3xl p-4 sm:p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg active:shadow-romantic flex items-center gap-4 sm:gap-6 min-h-[80px] sm:min-h-[90px]"
               >
-                <div className="bg-gradient-to-br from-romantic-pink-300 to-romantic-lavender-300 rounded-2xl p-4 text-4xl shadow-romantic">🧩</div>
-                <div>
-                  <h3 className="text-2xl font-semibold text-romantic-pink-700 mb-1">Puzzle Time</h3>
-                  <p className="text-romantic-pink-600 text-base">Solve to reveal something special</p>
+                <div className="bg-gradient-to-br from-romantic-pink-300 to-romantic-lavender-300 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-3xl sm:text-4xl shadow-romantic flex-shrink-0">🧩</div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-romantic-pink-700 mb-0.5 sm:mb-1 truncate">Puzzle Time</h3>
+                  <p className="text-romantic-pink-600 text-sm sm:text-base">Solve to reveal something special</p>
                 </div>
               </motion.div>
             </div>
@@ -483,7 +524,8 @@ const App = () => {
             {/* Easter eggs */}
             <motion.div
               whileHover={{ scale: 1.3, rotate: 10 }}
-              className="absolute top-12 right-8 text-3xl cursor-pointer"
+              whileTap={{ scale: 0.9 }}
+              className="absolute top-8 sm:top-12 right-4 sm:right-8 text-2xl sm:text-3xl cursor-pointer"
               onClick={() => triggerEasterEgg('brooklyn99')}
             >
               🚔
@@ -503,17 +545,17 @@ const App = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setCurrentPage('home')}
-              className="absolute top-6 left-6 bg-white/70 hover:bg-white/90 backdrop-blur-romantic rounded-full p-3 transition-all duration-300 shadow-romantic border-2 border-romantic-pink-200 min-h-[48px] min-w-[48px] flex items-center justify-center z-20"
+              className="absolute top-4 sm:top-6 left-4 sm:left-6 bg-white/70 hover:bg-white/90 backdrop-blur-romantic rounded-full p-2.5 sm:p-3 transition-all duration-300 shadow-romantic border-2 border-romantic-pink-200 min-h-[44px] min-w-[44px] sm:min-h-[48px] sm:min-w-[48px] flex items-center justify-center z-20"
             >
-              <ArrowLeft className="w-6 h-6 text-romantic-purple-600" />
+              <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-romantic-purple-600" />
             </motion.button>
 
-            <div className="text-center pt-24 pb-12">
+            <div className="text-center pt-20 sm:pt-24 pb-8 sm:pb-12 px-4">
               <motion.h2
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-romantic-purple-600 via-romantic-lavender-500 to-romantic-pink-500 bg-clip-text text-transparent mb-3 tracking-wide"
+                className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-romantic-purple-600 via-romantic-lavender-500 to-romantic-pink-500 bg-clip-text text-transparent mb-2 sm:mb-3 tracking-wide px-2"
                 style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.8px' }}
               >
                 Video Theater
@@ -522,19 +564,20 @@ const App = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.7 }}
-                className="text-romantic-purple-600 text-lg font-medium"
+                className="text-romantic-purple-600 text-base sm:text-lg font-medium px-2"
               >
                 Every frame is a memory with you
               </motion.p>
             </div>
 
-            <div className="grid grid-cols-2 gap-5 mt-8 max-w-2xl mx-auto">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5 mt-6 sm:mt-8 max-w-2xl mx-auto px-4">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 whileHover={{ scale: 1.05, rotate: 1 }}
-                className="aspect-square flex items-center justify-center cursor-pointer transition-all duration-300 overflow-hidden rounded-3xl shadow-romantic-lg border-2 border-romantic-pink-200 hover:shadow-romantic-glow"
+                whileTap={{ scale: 0.98 }}
+                className="aspect-square flex items-center justify-center cursor-pointer transition-all duration-300 overflow-hidden rounded-2xl sm:rounded-3xl shadow-romantic-lg border-2 border-romantic-pink-200 hover:shadow-romantic-glow active:scale-95"
                 onClick={() => setEnlargedImage('/images/image1.jpg')}
               >
                 <img src="/images/image1.jpg" alt="Memory 1" className="w-full h-full object-cover" />
@@ -544,7 +587,8 @@ const App = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.6, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 whileHover={{ scale: 1.05, rotate: -1 }}
-                className="aspect-square flex items-center justify-center cursor-pointer transition-all duration-300 overflow-hidden rounded-3xl shadow-romantic-lg border-2 border-romantic-lavender-200 hover:shadow-romantic-glow"
+                whileTap={{ scale: 0.98 }}
+                className="aspect-square flex items-center justify-center cursor-pointer transition-all duration-300 overflow-hidden rounded-2xl sm:rounded-3xl shadow-romantic-lg border-2 border-romantic-lavender-200 hover:shadow-romantic-glow active:scale-95"
                 onClick={() => setEnlargedImage('/images/image2.jpg')}
               >
                 <img src="/images/image2.jpg" alt="Memory 2" className="w-full h-full object-cover" />
@@ -554,7 +598,8 @@ const App = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 whileHover={{ scale: 1.05, rotate: 1 }}
-                className="aspect-square flex items-center justify-center cursor-pointer transition-all duration-300 overflow-hidden rounded-3xl shadow-romantic-lg border-2 border-romantic-purple-200 hover:shadow-romantic-glow"
+                whileTap={{ scale: 0.98 }}
+                className="aspect-square flex items-center justify-center cursor-pointer transition-all duration-300 overflow-hidden rounded-2xl sm:rounded-3xl shadow-romantic-lg border-2 border-romantic-purple-200 hover:shadow-romantic-glow active:scale-95"
                 onClick={() => setEnlargedImage('/images/image3.jpg')}
               >
                 <img src="/images/image3.jpg" alt="Memory 3" className="w-full h-full object-cover" />
@@ -563,11 +608,21 @@ const App = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.8, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-                className="aspect-square flex items-center justify-center overflow-hidden relative rounded-3xl shadow-romantic-lg border-2 border-romantic-pink-200 bg-white/50 backdrop-blur-sm"
+                className="aspect-square flex items-center justify-center overflow-hidden relative rounded-2xl sm:rounded-3xl shadow-romantic-lg border-2 border-romantic-pink-200 bg-white/50 backdrop-blur-sm group"
+                onMouseEnter={() => handleVideoInteraction(true)}
+                onMouseLeave={() => {
+                  // Check if video is actually playing before resuming music
+                  const iframe = theaterVideoRef.current;
+                  if (iframe) {
+                    // Assume video stops when user leaves the area
+                    setTimeout(() => handleVideoInteraction(false), 1000);
+                  }
+                }}
               >
                 <iframe
+                  ref={theaterVideoRef}
                   src="https://drive.google.com/file/d/1J_LcJLUDkzv_HIuQbnTlTZS57Lb2OyRW/preview"
-                  className="absolute inset-0 w-full h-full border-0 rounded-3xl"
+                  className="absolute inset-0 w-full h-full border-0 rounded-2xl sm:rounded-3xl"
                   style={{ transform: 'scale(1.5)', transformOrigin: 'center' }}
                   title="Video Theater Memory"
                   allow="autoplay"
@@ -684,16 +739,27 @@ const App = () => {
                 <div className="bg-white/70 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-3xl p-10 mx-auto max-w-2xl shadow-romantic-lg">
                   <h3 className="text-3xl md:text-4xl font-bold text-romantic-pink-600 mb-8 tracking-wide" style={{ fontFamily: "'Poppins', sans-serif" }}>You did it! 💕</h3>
                   
-                  <div className="rounded-3xl overflow-hidden shadow-romantic-lg mb-8 border-2 border-romantic-lavender-200">
+                  <div 
+                    className="rounded-3xl overflow-hidden shadow-romantic-lg mb-8 border-2 border-romantic-lavender-200"
+                    onMouseEnter={() => handleVideoInteraction(true)}
+                    onTouchStart={() => handleVideoInteraction(true)}
+                  >
                     <iframe
+                      ref={puzzleVideoRef}
                       src="https://drive.google.com/file/d/1YRrc0wJY57TZdQZXbECRqeJuHMcxUkL3/preview"
                       className="w-full rounded-3xl aspect-video"
                       title="Puzzle Completion Video"
                       allow="autoplay"
                       allowFullScreen
                       onLoad={(e) => {
+                        // Pause music when video loads (user will likely play it)
+                        handleVideoInteraction(true);
+                        
                         // Auto-navigate to confession after video duration (estimate 30 seconds)
-                        setTimeout(() => setCurrentPage('confession'), 32000);
+                        setTimeout(() => {
+                          setCurrentPage('confession');
+                          handleVideoInteraction(false); // Resume music when leaving
+                        }, 32000);
                       }}
                     />
                   </div>
@@ -732,15 +798,15 @@ const App = () => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-            className="min-h-screen flex items-center justify-center px-4 py-20"
+            className="min-h-screen flex items-center justify-center px-4 py-16 sm:py-20"
           >
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setCurrentPage('home')}
-              className="absolute top-6 left-6 bg-white/70 hover:bg-white/90 backdrop-blur-romantic rounded-full p-3 transition-all duration-300 shadow-romantic border-2 border-romantic-pink-200 z-10 min-h-[48px] min-w-[48px] flex items-center justify-center"
+              className="absolute top-4 sm:top-6 left-4 sm:left-6 bg-white/70 hover:bg-white/90 backdrop-blur-romantic rounded-full p-2.5 sm:p-3 transition-all duration-300 shadow-romantic border-2 border-romantic-pink-200 z-10 min-h-[44px] min-w-[44px] sm:min-h-[48px] sm:min-w-[48px] flex items-center justify-center"
             >
-              <ArrowLeft className="w-6 h-6 text-romantic-purple-600" />
+              <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 text-romantic-purple-600" />
             </motion.button>
 
             <div className="w-full max-w-lg">
@@ -758,20 +824,20 @@ const App = () => {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.2, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-                      className="text-8xl mb-8"
+                      className="text-6xl sm:text-7xl md:text-8xl mb-6 sm:mb-8"
                     >
                       🔥
                     </motion.div>
 
-                    <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-romantic-pink-500 via-romantic-lavender-500 to-romantic-purple-500 bg-clip-text text-transparent mb-4 tracking-wide" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.8px' }}>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-romantic-pink-500 via-romantic-lavender-500 to-romantic-purple-500 bg-clip-text text-transparent mb-3 sm:mb-4 tracking-wide px-2" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.8px' }}>
                       FLAMES Calculator
                     </h2>
-                    <p className="text-romantic-purple-600 text-lg mb-10 font-medium">Discover what the universe has planned for us</p>
+                    <p className="text-romantic-purple-600 text-base sm:text-lg mb-8 sm:mb-10 font-medium px-2">Discover what the universe has planned for us</p>
 
-                    <div className="bg-white/70 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-3xl p-8 shadow-romantic-lg">
-                      <div className="space-y-6">
+                    <div className="bg-white/70 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-romantic-lg">
+                      <div className="space-y-5 sm:space-y-6">
                         <div>
-                          <label className="block text-romantic-purple-700 text-sm font-semibold mb-3 text-left">First Name</label>
+                          <label className="block text-romantic-purple-700 text-xs sm:text-sm font-semibold mb-2 sm:mb-3 text-left">First Name</label>
                           <input
                             type="text"
                             value={flamesName1}
@@ -779,15 +845,15 @@ const App = () => {
                               setFlamesName1(e.target.value);
                               setShowFlamesResult(false);
                             }}
-                            className="w-full px-6 py-4 rounded-2xl bg-white/80 border-2 border-romantic-pink-300 text-gray-800 placeholder-romantic-pink-400 focus:outline-none focus:border-romantic-purple-400 focus:ring-2 focus:ring-romantic-purple-200 text-center text-xl transition-all duration-300 min-h-[56px]"
+                            className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-white/80 border-2 border-romantic-pink-300 text-gray-800 placeholder-romantic-pink-400 focus:outline-none focus:border-romantic-purple-400 focus:ring-2 focus:ring-romantic-purple-200 text-center text-lg sm:text-xl transition-all duration-300 min-h-[52px] sm:min-h-[56px]"
                             placeholder="Your name"
                           />
                         </div>
 
-                        <div className="text-4xl text-romantic-pink-500">💕</div>
+                        <div className="text-3xl sm:text-4xl text-romantic-pink-500">💕</div>
 
                         <div>
-                          <label className="block text-romantic-purple-700 text-sm font-semibold mb-3 text-left">Second Name</label>
+                          <label className="block text-romantic-purple-700 text-xs sm:text-sm font-semibold mb-2 sm:mb-3 text-left">Second Name</label>
                           <input
                             type="text"
                             value={flamesName2}
@@ -795,7 +861,7 @@ const App = () => {
                               setFlamesName2(e.target.value);
                               setShowFlamesResult(false);
                             }}
-                            className="w-full px-6 py-4 rounded-2xl bg-white/80 border-2 border-romantic-lavender-300 text-gray-800 placeholder-romantic-lavender-400 focus:outline-none focus:border-romantic-purple-400 focus:ring-2 focus:ring-romantic-purple-200 text-center text-xl transition-all duration-300 min-h-[56px]"
+                            className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-white/80 border-2 border-romantic-lavender-300 text-gray-800 placeholder-romantic-lavender-400 focus:outline-none focus:border-romantic-purple-400 focus:ring-2 focus:ring-romantic-purple-200 text-center text-lg sm:text-xl transition-all duration-300 min-h-[52px] sm:min-h-[56px]"
                             placeholder="Their name"
                           />
                         </div>
@@ -805,7 +871,7 @@ const App = () => {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={calculateFlames}
-                        className="w-full mt-8 bg-gradient-to-r from-romantic-pink-400 via-romantic-lavender-400 to-romantic-purple-400 hover:from-romantic-pink-500 hover:via-romantic-lavender-500 hover:to-romantic-purple-500 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 shadow-romantic-lg hover:shadow-romantic-glow min-h-[56px]"
+                        className="w-full mt-6 sm:mt-8 bg-gradient-to-r from-romantic-pink-400 via-romantic-lavender-400 to-romantic-purple-400 hover:from-romantic-pink-500 hover:via-romantic-lavender-500 hover:to-romantic-purple-500 text-white font-bold py-3 sm:py-4 px-6 rounded-xl sm:rounded-2xl text-lg sm:text-xl transition-all duration-300 shadow-romantic-lg hover:shadow-romantic-glow min-h-[52px] sm:min-h-[56px] active:scale-95"
                       >
                         Calculate Our Fate 🔥
                       </motion.button>

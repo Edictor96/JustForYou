@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '475px',
+      },
       colors: {
         // Darker romantic purple/violet palette with medium red violet tones
         'romantic-pink': {
