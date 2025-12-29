@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Music, ArrowLeft, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -13,7 +13,6 @@ const App = () => {
   const [showDialPad, setShowDialPad] = useState(false);
   const [enlargedImage, setEnlargedImage] = useState(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
-  const [soundCloudWidget, setSoundCloudWidget] = useState(null);
   const [videoEnded, setVideoEnded] = useState(false);
   
   // FLAMES Calculator State
@@ -170,7 +169,6 @@ const App = () => {
       const iframe = document.getElementById('soundcloud-widget');
       if (iframe && window.SC) {
         const widget = window.SC.Widget(iframe);
-        setSoundCloudWidget(widget);
         
         // Auto-play when ready
         widget.bind(window.SC.Widget.Events.READY, () => {
@@ -199,13 +197,13 @@ const App = () => {
   }, [puzzleSolved, videoEnded]);
 
   return (
-    <div className="min-h-screen bg-romantic-pink-50 text-gray-800 overflow-hidden relative grain-overlay font-romantic">
+    <div className="min-h-screen bg-romantic-pink-100 text-gray-800 overflow-hidden relative grain-overlay font-romantic">
       {/* Ambient romantic background with gradient blooms */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         {/* Gradient blooms */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-romantic-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-romantic-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-romantic-lavender-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-0 left-0 w-96 h-96 bg-romantic-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-romantic-violet-400 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-romantic-lavender-400 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse" style={{ animationDelay: '2s' }} />
         
         {/* Subtle floating hearts */}
         {[...Array(15)].map((_, i) => (
@@ -232,13 +230,13 @@ const App = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-          className="fixed inset-0 z-[200] bg-gradient-to-br from-romantic-pink-100 via-romantic-lavender-100 to-romantic-purple-100 flex items-center justify-center"
+          className="fixed inset-0 z-[200] bg-gradient-to-br from-romantic-purple-200 via-romantic-lavender-200 to-romantic-violet-200 flex items-center justify-center"
         >
-          <div className="absolute inset-0 overflow-hidden opacity-10">
+          <div className="absolute inset-0 overflow-hidden opacity-15">
             {[...Array(30)].map((_, i) => (
               <div
                 key={i}
-                className="absolute text-romantic-pink-500 opacity-40"
+                className="absolute text-romantic-purple-600 opacity-50"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
@@ -266,13 +264,13 @@ const App = () => {
               >
                 💕
               </motion.div>
-              <h1 className="text-5xl md:text-6xl font-bold text-romantic-pink-600 mb-4 tracking-wide" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.5px' }}>
+              <h1 className="text-5xl md:text-6xl font-bold text-romantic-purple-700 mb-4 tracking-wide" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '0.5px' }}>
                 This is for you
               </h1>
-              <h2 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-romantic-pink-500 via-romantic-lavender-400 to-romantic-purple-500 bg-clip-text text-transparent mb-6" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '1px' }}>
+              <h2 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-romantic-purple-600 via-romantic-lavender-500 to-romantic-violet-600 bg-clip-text text-transparent mb-6" style={{ fontFamily: "'Poppins', sans-serif", letterSpacing: '1px' }}>
                 Trisha
               </h2>
-              <p className="text-2xl text-romantic-purple-600 mb-8 font-medium">Happy New Year 2026! 🎊</p>
+              <p className="text-2xl text-romantic-purple-700 mb-8 font-medium">Happy New Year 2026! 🎊</p>
             </motion.div>
 
             <motion.form
@@ -280,7 +278,7 @@ const App = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
               onSubmit={handlePasswordSubmit}
-              className="bg-white/70 backdrop-blur-romantic rounded-3xl p-8 border border-romantic-pink-200 shadow-romantic-lg"
+              className="bg-white/60 backdrop-blur-romantic rounded-3xl p-8 border-2 border-romantic-purple-300 shadow-romantic-lg"
             >
               <label className="block text-romantic-purple-700 text-lg font-semibold mb-4 text-center">
                 Enter the magic word 🔐
@@ -289,9 +287,9 @@ const App = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-6 py-4 rounded-2xl bg-white/80 border-2 ${
-                  passwordError ? 'border-red-400 animate-shake' : 'border-romantic-pink-300'
-                } text-gray-800 placeholder-romantic-pink-400 focus:outline-none focus:border-romantic-purple-400 focus:ring-2 focus:ring-romantic-purple-200 text-center text-xl transition-all duration-300`}
+                className={`w-full px-6 py-4 rounded-2xl bg-white/70 border-2 ${
+                  passwordError ? 'border-red-500 animate-shake' : 'border-romantic-purple-400'
+                } text-gray-800 placeholder-romantic-purple-400 focus:outline-none focus:border-romantic-violet-500 focus:ring-2 focus:ring-romantic-purple-300 text-center text-xl transition-all duration-300`}
                 placeholder="Hint: Your name, year, or celebration"
                 autoFocus
               />
@@ -299,20 +297,20 @@ const App = () => {
                 <motion.p
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-red-500 text-center mt-3"
+                  className="text-red-600 text-center mt-3 font-medium"
                 >
                   Oops! Try again 💗
                 </motion.p>
               )}
               <button
                 type="submit"
-                className="w-full mt-6 bg-gradient-to-r from-romantic-pink-400 via-romantic-lavender-400 to-romantic-purple-400 hover:from-romantic-pink-500 hover:via-romantic-lavender-500 hover:to-romantic-purple-500 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-romantic-glow min-h-[48px]"
+                className="w-full mt-6 bg-gradient-to-r from-romantic-purple-500 via-romantic-violet-500 to-romantic-lavender-500 hover:from-romantic-purple-600 hover:via-romantic-violet-600 hover:to-romantic-lavender-600 text-white font-bold py-4 px-6 rounded-2xl text-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-romantic-glow min-h-[48px]"
               >
                 tu bohot awesome hai 💖
               </button>
             </motion.form>
 
-            <div className="text-center mt-8 text-romantic-purple-600/70 text-sm font-medium">
+            <div className="text-center mt-8 text-romantic-purple-700 text-sm font-medium">
               Made with love ❤️
             </div>
           </div>
@@ -320,12 +318,12 @@ const App = () => {
       )}
 
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 w-full h-1.5 bg-romantic-pink-200/50 z-50 backdrop-blur-sm">
+      <div className="fixed top-0 left-0 w-full h-1.5 bg-romantic-purple-300/60 z-50 backdrop-blur-sm">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-          className="h-full bg-gradient-to-r from-romantic-pink-400 via-romantic-lavender-400 to-romantic-purple-400 shadow-romantic"
+          className="h-full bg-gradient-to-r from-romantic-purple-600 via-romantic-violet-600 to-romantic-lavender-600 shadow-romantic"
         />
       </div>
 
@@ -338,7 +336,8 @@ const App = () => {
           scrolling="no"
           frameBorder="no"
           allow="autoplay"
-          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%3Aplaylists%3A2163661529%3Fsecret_token%3Ds-uIIJQ0rsHC4&color=%23ff8fab&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+          title="SoundCloud Music Player"
+          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/soundcloud%3Aplaylists%3A2163661529%3Fsecret_token%3Ds-uIIJQ0rsHC4&color=%23a566c3&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"
         />
       </div>
 
@@ -349,7 +348,7 @@ const App = () => {
         className="fixed bottom-6 right-6 z-50 cursor-pointer"
         onClick={() => setIsPlayerVisible(!isPlayerVisible)}
       >
-        <div className="bg-gradient-to-r from-romantic-pink-400 to-romantic-lavender-400 rounded-full px-6 py-4 shadow-romantic-lg flex items-center gap-3 hover:shadow-romantic-glow transition-all duration-300 min-h-[48px]">
+        <div className="bg-gradient-to-r from-romantic-purple-500 to-romantic-violet-500 rounded-full px-6 py-4 shadow-romantic-lg flex items-center gap-3 hover:shadow-romantic-glow transition-all duration-300 min-h-[48px]">
           <Music className="w-5 h-5 text-white animate-pulse" />
           <span className="text-sm text-white font-semibold">
             {isPlayerVisible ? 'Hide Player' : 'Playing: Our Playlist'}
@@ -440,13 +439,13 @@ const App = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 whileHover={{ scale: 1.02, x: 8 }}
-                onClick={() => setCurrentPage('theater')}
-                className="bg-white/60 backdrop-blur-romantic border-2 border-romantic-purple-200 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
+                onClick={() => setCurrentPage('flames')}
+                className="bg-white/50 backdrop-blur-romantic border-2 border-romantic-purple-300 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
               >
-                <div className="bg-gradient-to-br from-romantic-purple-200 to-romantic-lavender-200 rounded-2xl p-4 text-4xl shadow-romantic">🎬</div>
+                <div className="bg-gradient-to-br from-romantic-purple-300 to-romantic-violet-300 rounded-2xl p-4 text-4xl shadow-romantic">🔥</div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-romantic-purple-700 mb-1">Video Theater</h3>
-                  <p className="text-romantic-purple-500 text-base">Our moments together</p>
+                  <h3 className="text-2xl font-semibold text-romantic-purple-700 mb-1">FLAMES Calculator</h3>
+                  <p className="text-romantic-purple-600 text-base">Discover our destiny</p>
                 </div>
               </motion.div>
 
@@ -455,13 +454,13 @@ const App = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 whileHover={{ scale: 1.02, x: 8 }}
-                onClick={() => setCurrentPage('puzzle')}
-                className="bg-white/60 backdrop-blur-romantic border-2 border-romantic-pink-200 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
+                onClick={() => setCurrentPage('theater')}
+                className="bg-white/50 backdrop-blur-romantic border-2 border-romantic-lavender-300 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
               >
-                <div className="bg-gradient-to-br from-romantic-pink-200 to-romantic-lavender-200 rounded-2xl p-4 text-4xl shadow-romantic">🧩</div>
+                <div className="bg-gradient-to-br from-romantic-lavender-300 to-romantic-violet-200 rounded-2xl p-4 text-4xl shadow-romantic">🎬</div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-romantic-pink-700 mb-1">Puzzle Time</h3>
-                  <p className="text-romantic-pink-500 text-base">Solve to reveal something special</p>
+                  <h3 className="text-2xl font-semibold text-romantic-lavender-700 mb-1">Video Theater</h3>
+                  <p className="text-romantic-lavender-600 text-base">Our moments together</p>
                 </div>
               </motion.div>
 
@@ -470,13 +469,13 @@ const App = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.7, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 whileHover={{ scale: 1.02, x: 8 }}
-                onClick={() => setCurrentPage('flames')}
-                className="bg-white/60 backdrop-blur-romantic border-2 border-romantic-lavender-200 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
+                onClick={() => setCurrentPage('puzzle')}
+                className="bg-white/50 backdrop-blur-romantic border-2 border-romantic-pink-300 rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:shadow-romantic-lg flex items-center gap-6 min-h-[90px]"
               >
-                <div className="bg-gradient-to-br from-romantic-lavender-200 to-romantic-purple-200 rounded-2xl p-4 text-4xl shadow-romantic">🔥</div>
+                <div className="bg-gradient-to-br from-romantic-pink-300 to-romantic-lavender-300 rounded-2xl p-4 text-4xl shadow-romantic">🧩</div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-romantic-lavender-700 mb-1">FLAMES Calculator</h3>
-                  <p className="text-romantic-lavender-500 text-base">Discover our destiny</p>
+                  <h3 className="text-2xl font-semibold text-romantic-pink-700 mb-1">Puzzle Time</h3>
+                  <p className="text-romantic-pink-600 text-base">Solve to reveal something special</p>
                 </div>
               </motion.div>
             </div>
