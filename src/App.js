@@ -611,12 +611,8 @@ const App = () => {
                 className="aspect-square flex items-center justify-center overflow-hidden relative rounded-2xl sm:rounded-3xl shadow-romantic-lg border-2 border-romantic-pink-200 bg-white/50 backdrop-blur-sm group"
                 onMouseEnter={() => handleVideoInteraction(true)}
                 onMouseLeave={() => {
-                  // Check if video is actually playing before resuming music
-                  const iframe = theaterVideoRef.current;
-                  if (iframe) {
-                    // Assume video stops when user leaves the area
-                    setTimeout(() => handleVideoInteraction(false), 1000);
-                  }
+                  // Instantly resume music when leaving video
+                  handleVideoInteraction(false);
                 }}
               >
                 <iframe
@@ -625,9 +621,9 @@ const App = () => {
                   className="absolute inset-0 w-full h-full border-0 rounded-2xl sm:rounded-3xl"
                   style={{ transform: 'scale(1.5)', transformOrigin: 'center' }}
                   title="Video Theater Memory"
-                  allow="autoplay"
+                  allow="autoplay; fullscreen"
                   loading="eager"
-                  preload="auto"
+                  importance="high"
                   allowFullScreen
                 />
               </motion.div>
@@ -749,16 +745,18 @@ const App = () => {
                       src="https://drive.google.com/file/d/1YRrc0wJY57TZdQZXbECRqeJuHMcxUkL3/preview"
                       className="w-full rounded-3xl aspect-video"
                       title="Puzzle Completion Video"
-                      allow="autoplay"
+                      allow="autoplay; fullscreen"
+                      loading="eager"
+                      importance="high"
                       allowFullScreen
                       onLoad={(e) => {
-                        // Pause music when video loads (user will likely play it)
+                        // Instantly pause music when video loads
                         handleVideoInteraction(true);
                         
                         // Auto-navigate to confession after video duration (estimate 30 seconds)
                         setTimeout(() => {
                           setCurrentPage('confession');
-                          handleVideoInteraction(false); // Resume music when leaving
+                          handleVideoInteraction(false); // Instantly resume music when leaving
                         }, 32000);
                       }}
                     />
@@ -1071,7 +1069,7 @@ const App = () => {
             >
               <p className="text-2xl md:text-3xl leading-relaxed bg-gradient-to-r from-romantic-pink-600 via-romantic-lavender-500 to-romantic-purple-600 bg-clip-text text-transparent font-bold" style={{ fontFamily: "'Poppins', sans-serif", lineHeight: 1.7 }}>
                 yaar tu mujhe genuinely bohot pasand,<br />
-                <span className="text-romantic-pink-600">KISMAT badal de</span>
+                <span className="text-romantic-pink-600">Dubrovnik chalegi?</span>
               </p>
             </motion.div>
 
